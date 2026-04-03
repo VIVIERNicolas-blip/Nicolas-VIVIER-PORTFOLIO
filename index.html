@@ -328,154 +328,8 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
   </div>
   <div class="hero-right">
     <div class="hero-character" aria-hidden="true">
-      <svg id="character-svg" viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg" style="width:400px;height:480px;display:block;margin:0 auto;">
-        <defs>
-          <radialGradient id="planetGrad" cx="38%" cy="32%" r="65%">
-            <stop offset="0%" stop-color="#2A4A90"/>
-            <stop offset="60%" stop-color="#162450"/>
-            <stop offset="100%" stop-color="#060E1F"/>
-          </radialGradient>
-          <radialGradient id="planetShine" cx="32%" cy="28%" r="55%">
-            <stop offset="0%" stop-color="rgba(255,255,255,0.18)"/>
-            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
-          </radialGradient>
-          <clipPath id="pClip"><circle cx="160" cy="330" r="72"/></clipPath>
-        </defs>
-        <style>
-          @keyframes pSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-          @keyframes sTw{0%,100%{opacity:0.15}50%{opacity:1}}
-          @keyframes rSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-          @keyframes eB{0%,88%,100%{transform:scaleY(1)}94%{transform:scaleY(0.08)}}
-          @keyframes bodyBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-          @keyframes legFwd{0%,100%{transform:rotate(-28deg)}50%{transform:rotate(28deg)}}
-          @keyframes legBwd{0%,100%{transform:rotate(28deg)}50%{transform:rotate(-28deg)}}
-          @keyframes armFwd{0%,100%{transform:rotate(22deg)}50%{transform:rotate(-22deg)}}
-          @keyframes armBwd{0%,100%{transform:rotate(-22deg)}50%{transform:rotate(22deg)}}
-          @keyframes hairB{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
-
-          #pspin{animation:pSpin 22s linear infinite;transform-origin:160px 330px}
-          #rSpin{animation:rSpin 10s linear infinite;transform-origin:160px 330px}
-          .s1{animation:sTw 2.1s ease-in-out infinite}
-          .s2{animation:sTw 2.1s ease-in-out infinite 0.7s}
-          .s3{animation:sTw 2.1s ease-in-out infinite 1.4s}
-          .s4{animation:sTw 3.2s ease-in-out infinite 0.3s}
-          #el2{animation:eB 4.5s ease-in-out infinite;transform-origin:136px 152px}
-          #er2{animation:eB 4.5s ease-in-out infinite 0.2s;transform-origin:168px 152px}
-          #hg{animation:hairB 0.5s ease-in-out infinite}
-          #bodyG{animation:bodyBob 0.5s ease-in-out infinite}
-
-          /* Jambe gauche avance quand jambe droite recule */
-          #legL{animation:legFwd 0.5s ease-in-out infinite;transform-origin:148px 262px}
-          #legR{animation:legBwd 0.5s ease-in-out infinite;transform-origin:164px 262px}
-          /* Bras opposés aux jambes */
-          #armL{animation:armBwd 0.5s ease-in-out infinite;transform-origin:126px 210px}
-          #armR{animation:armFwd 0.5s ease-in-out infinite;transform-origin:178px 210px}
-        </style>
-
-        <!-- Stars -->
-        <circle class="s1" cx="18" cy="35" r="2" fill="#C9A84C"/>
-        <circle class="s2" cx="298" cy="55" r="1.5" fill="white"/>
-        <circle class="s3" cx="12" cy="180" r="1.5" fill="white"/>
-        <circle class="s4" cx="305" cy="200" r="2" fill="#C9A84C"/>
-        <circle class="s1" cx="265" cy="18" r="1.5" fill="white"/>
-        <circle class="s2" cx="48" cy="90" r="1.5" fill="#C9A84C"/>
-        <circle class="s3" cx="285" cy="130" r="2" fill="white"/>
-        <circle class="s4" cx="28" cy="280" r="1.5" fill="white"/>
-        <circle class="s1" cx="290" cy="310" r="1.5" fill="#C9A84C"/>
-        <circle class="s2" cx="40" cy="360" r="1" fill="white"/>
-
-        <!-- Planet -->
-        <circle cx="160" cy="330" r="72" fill="url(#planetGrad)"/>
-        <g id="pspin" clip-path="url(#pClip)">
-          <ellipse cx="135" cy="316" rx="28" ry="15" fill="#1D9E75" opacity="0.7"/>
-          <ellipse cx="192" cy="336" rx="22" ry="12" fill="#1D9E75" opacity="0.6"/>
-          <ellipse cx="155" cy="350" rx="18" ry="9" fill="#1D9E75" opacity="0.5"/>
-          <ellipse cx="105" cy="342" rx="12" ry="7" fill="#1D9E75" opacity="0.4"/>
-          <ellipse cx="210" cy="318" rx="10" ry="6" fill="#1D9E75" opacity="0.5"/>
-          <line x1="88" y1="330" x2="232" y2="330" stroke="rgba(201,168,76,0.2)" stroke-width="1"/>
-          <line x1="94" y1="313" x2="226" y2="313" stroke="rgba(201,168,76,0.12)" stroke-width="0.7"/>
-          <line x1="94" y1="347" x2="226" y2="347" stroke="rgba(201,168,76,0.12)" stroke-width="0.7"/>
-          <line x1="160" y1="258" x2="160" y2="402" stroke="rgba(201,168,76,0.12)" stroke-width="0.7"/>
-          <line x1="120" y1="260" x2="120" y2="400" stroke="rgba(201,168,76,0.08)" stroke-width="0.6"/>
-          <line x1="200" y1="260" x2="200" y2="400" stroke="rgba(201,168,76,0.08)" stroke-width="0.6"/>
-        </g>
-        <circle cx="160" cy="330" r="72" fill="url(#planetShine)"/>
-
-        <!-- Ring behind character -->
-        <g id="rSpin">
-          <ellipse cx="160" cy="330" rx="100" ry="16" fill="none" stroke="#C9A84C" stroke-width="3" opacity="0.4"/>
-          <ellipse cx="160" cy="330" rx="92" ry="12" fill="none" stroke="#C9A84C" stroke-width="1" opacity="0.2"/>
-        </g>
-
-        <!-- ═══ CHARACTER WALKING ═══ -->
-        <!-- Jambe gauche (devant) -->
-        <g id="legL">
-          <rect x="139" y="262" width="18" height="38" rx="9" fill="#C9A84C"/>
-          <rect x="134" y="292" width="26" height="12" rx="6" fill="#0D1B3E"/>
-        </g>
-        <!-- Jambe droite (derrière) -->
-        <g id="legR">
-          <rect x="155" y="262" width="18" height="38" rx="9" fill="#B8943A"/>
-          <rect x="150" y="292" width="26" height="12" rx="6" fill="#0A1630"/>
-        </g>
-
-        <!-- Corps + tête -->
-        <g id="bodyG">
-          <!-- Bras gauche -->
-          <g id="armL">
-            <rect x="102" y="202" width="30" height="16" rx="8" fill="#B8943A"/>
-            <circle cx="99" cy="205" r="11" fill="#B8943A"/>
-          </g>
-
-          <!-- Corps -->
-          <rect x="122" y="196" width="58" height="66" rx="18" fill="#1E3060"/>
-          <rect x="142" y="196" width="20" height="13" rx="5" fill="#C9A84C" opacity="0.4"/>
-          <path d="M152 209 L147 224 L152 220 L157 224 Z" fill="#C9A84C" opacity="0.75"/>
-
-          <!-- Bras droit -->
-          <g id="armR">
-            <rect x="180" y="202" width="30" height="16" rx="8" fill="#C9A84C"/>
-            <circle cx="213" cy="205" r="11" fill="#C9A84C"/>
-          </g>
-
-          <!-- Cou -->
-          <rect x="143" y="181" width="18" height="18" rx="6" fill="#C9A84C"/>
-
-          <!-- Tête -->
-          <ellipse cx="152" cy="150" rx="36" ry="38" fill="#C9A84C"/>
-
-          <!-- Cheveux -->
-          <g id="hg">
-            <ellipse cx="152" cy="114" rx="32" ry="14" fill="#1A1200"/>
-            <ellipse cx="120" cy="126" rx="11" ry="20" fill="#1A1200"/>
-            <ellipse cx="184" cy="126" rx="11" ry="20" fill="#1A1200"/>
-            <ellipse cx="136" cy="111" rx="10" ry="13" fill="#1A1200"/>
-            <ellipse cx="168" cy="110" rx="10" ry="13" fill="#1A1200"/>
-          </g>
-
-          <!-- Oreilles -->
-          <ellipse cx="116" cy="150" rx="7" ry="10" fill="#C9A84C"/>
-          <ellipse cx="188" cy="150" rx="7" ry="10" fill="#C9A84C"/>
-
-          <!-- Yeux -->
-          <g id="el2"><ellipse cx="136" cy="148" rx="8" ry="9" fill="white"/><circle cx="138" cy="149" r="4.5" fill="#1A1200"/><circle cx="139.5" cy="147" r="1.5" fill="white"/></g>
-          <g id="er2"><ellipse cx="168" cy="148" rx="8" ry="9" fill="white"/><circle cx="170" cy="149" r="4.5" fill="#1A1200"/><circle cx="171.5" cy="147" r="1.5" fill="white"/></g>
-
-          <!-- Sourcils -->
-          <path d="M128 135 Q136 130 144 135" stroke="#1A1200" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <path d="M160 135 Q168 130 176 135" stroke="#1A1200" stroke-width="3" fill="none" stroke-linecap="round"/>
-
-          <!-- Nez -->
-          <ellipse cx="152" cy="157" rx="4" ry="3" fill="rgba(0,0,0,0.1)"/>
-
-          <!-- Sourire -->
-          <path d="M137 168 Q152 183 167 168" stroke="#1A1200" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-
-          <!-- Joues -->
-          <ellipse cx="120" cy="161" rx="10" ry="6" fill="rgba(220,90,70,0.2)"/>
-          <ellipse cx="184" cy="161" rx="10" ry="6" fill="rgba(220,90,70,0.2)"/>
-        </g>
-      </svg>
+      <canvas id="walkCanvas" width="400" height="280" style="display:block;margin:0 auto;"></canvas>
+    </div>
     </div>
     <p class="hero-intro-label">En quelques mots</p>
     <p class="hero-intro-text">Passionné par la gestion et l'organisation, je développe mes compétences au sein de Véolia Grand Est tout en poursuivant mon BUT GEA à l'IUT Nancy-Charlemagne.</p>
@@ -637,4 +491,295 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => ob
 
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-links a');
-window.addEventListener(
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id'); });
+  navLinks.forEach(a => { a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : ''; });
+});
+
+/* ── CANVAS WALKING CHARACTER ── */
+(function(){
+  const canvas = document.getElementById('walkCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  const GOLD   = '#C9A84C';
+  const GOLD2  = '#B8943A';
+  const NAVY   = '#0D1B3E';
+  const NAVY2  = '#1E3060';
+  const SKIN   = '#C9A84C';
+  const DARK   = '#1A1200';
+  const WHITE  = '#FFFFFF';
+  const GROUND_Y = H - 50;
+  const SPEED  = 0.6; // lent
+
+  // Sol : segments qui tombent derrière le perso
+  const SEG_W = 18;
+  const NUM_SEGS = Math.ceil(W / SEG_W) + 2;
+  let segments = [];
+  for (let i = 0; i < NUM_SEGS; i++) {
+    segments.push({ x: i * SEG_W, y: GROUND_Y, vy: 0, falling: false, alpha: 1 });
+  }
+
+  let t = 0; // temps global
+  let charX = W * 0.42; // position X fixe du perso (centré légèrement à gauche)
+
+  function getSegUnderFoot(fx) {
+    // segment sous le pied droit (le perso marche dessus)
+    return segments.find(s => fx >= s.x && fx < s.x + SEG_W);
+  }
+
+  function drawRoundRect(x, y, w, h, r, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, r);
+    ctx.fill();
+  }
+
+  function drawCharacter(cx, cy, walkT) {
+    // walkT : 0..1 cycle de marche
+    const cycle  = Math.PI * 2 * walkT;
+    const bobY   = Math.abs(Math.sin(cycle)) * -6; // corps monte légèrement
+
+    // angles jambes (vue de face : translation verticale)
+    const legLY  = Math.sin(cycle) * 16;           // jambe gauche
+    const legRY  = Math.sin(cycle + Math.PI) * 16; // jambe droite (opposée)
+    const armLR  = Math.sin(cycle + Math.PI) * 14; // bras gauche (opposé jambe G)
+    const armRR  = Math.sin(cycle) * 14;            // bras droit
+
+    const base   = cy + bobY;
+    const scale  = 1;
+
+    // Ombres portées au sol
+    ctx.save();
+    ctx.globalAlpha = 0.18;
+    ctx.fillStyle = DARK;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy + 2, 28, 6, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // ── JAMBE GAUCHE ──
+    ctx.save();
+    ctx.translate(cx - 12, base + 60);
+    ctx.translate(0, legLY > 0 ? 0 : legLY * 0.4);
+    // cuisse
+    drawRoundRect(-9, 0, 18, 28, 9, SKIN);
+    // mollet
+    drawRoundRect(-7, 26, 14, 24, 7, GOLD2);
+    // chaussure
+    ctx.fillStyle = NAVY;
+    ctx.beginPath();
+    ctx.ellipse(2, 52, 14, 7, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // ── JAMBE DROITE ──
+    ctx.save();
+    ctx.translate(cx + 12, base + 60);
+    ctx.translate(0, legRY > 0 ? 0 : legRY * 0.4);
+    drawRoundRect(-9, 0, 18, 28, 9, GOLD2);
+    drawRoundRect(-7, 26, 14, 24, 7, '#a07830');
+    ctx.fillStyle = '#0a1428';
+    ctx.beginPath();
+    ctx.ellipse(2, 52, 14, 7, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // ── BRAS GAUCHE ──
+    ctx.save();
+    ctx.translate(cx - 28, base + 8);
+    ctx.rotate(armLR * Math.PI / 180);
+    drawRoundRect(-10, 0, 20, 46, 10, GOLD2);
+    // main
+    ctx.fillStyle = GOLD2;
+    ctx.beginPath(); ctx.ellipse(0, 48, 11, 10, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+
+    // ── CORPS ──
+    ctx.save();
+    ctx.translate(cx, base);
+    drawRoundRect(-30, 0, 60, 65, 18, NAVY2);
+    // col
+    drawRoundRect(-11, 0, 22, 13, 5, GOLD + '55');
+    // cravate
+    ctx.fillStyle = GOLD;
+    ctx.globalAlpha = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(0, 13); ctx.lineTo(-5, 30); ctx.lineTo(0, 25); ctx.lineTo(5, 30); ctx.closePath();
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    // boutons
+    ctx.fillStyle = GOLD + '66';
+    ctx.beginPath(); ctx.arc(0, 42, 2.5, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(0, 54, 2.5, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+
+    // ── BRAS DROIT ──
+    ctx.save();
+    ctx.translate(cx + 28, base + 8);
+    ctx.rotate(armRR * Math.PI / 180);
+    drawRoundRect(-10, 0, 20, 46, 10, SKIN);
+    ctx.fillStyle = SKIN;
+    ctx.beginPath(); ctx.ellipse(0, 48, 11, 10, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+
+    // ── COU ──
+    ctx.save();
+    ctx.translate(cx, base);
+    drawRoundRect(-9, -18, 18, 20, 7, SKIN);
+    ctx.restore();
+
+    // ── TÊTE ──
+    ctx.save();
+    ctx.translate(cx, base - 18);
+
+    // Oreilles
+    ctx.fillStyle = SKIN;
+    ctx.beginPath(); ctx.ellipse(-37, -28, 8, 11, 0, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = GOLD2; ctx.globalAlpha=0.4;
+    ctx.beginPath(); ctx.ellipse(-37, -28, 5, 7, 0, 0, Math.PI*2); ctx.fill();
+    ctx.globalAlpha=1;
+    ctx.fillStyle = SKIN;
+    ctx.beginPath(); ctx.ellipse(37, -28, 8, 11, 0, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = GOLD2; ctx.globalAlpha=0.4;
+    ctx.beginPath(); ctx.ellipse(37, -28, 5, 7, 0, 0, Math.PI*2); ctx.fill();
+    ctx.globalAlpha=1;
+
+    // Tête principale
+    ctx.fillStyle = SKIN;
+    ctx.beginPath();
+    ctx.ellipse(0, -30, 36, 38, 0, 0, Math.PI*2);
+    ctx.fill();
+
+    // Cheveux
+    ctx.fillStyle = DARK;
+    ctx.beginPath(); ctx.ellipse(0, -62, 32, 14, 0, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(-28, -52, 11, 20, 0, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(28, -52, 11, 20, 0, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(-14, -65, 10, 13, 0, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(14, -66, 10, 13, 0, 0, Math.PI*2); ctx.fill();
+
+    // Sourcils
+    ctx.strokeStyle = DARK; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-26,-44); ctx.quadraticCurveTo(-18,-49,-10,-44); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(10,-44);  ctx.quadraticCurveTo(18,-49,26,-44);   ctx.stroke();
+
+    // Yeux — clignement toutes les 4s
+    const blinkT = (t * 0.6) % 4;
+    const blinkScale = (blinkT > 3.7) ? Math.max(0.05, 1 - (blinkT - 3.7) * 20) : 1;
+    ctx.save();
+    ctx.scale(1, blinkScale);
+    // Oeil gauche
+    ctx.fillStyle = WHITE;
+    ctx.beginPath(); ctx.ellipse(-18,-28,9,10,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = DARK;
+    ctx.beginPath(); ctx.arc(-16,-27,5.5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = WHITE;
+    ctx.beginPath(); ctx.arc(-15,-29,2,0,Math.PI*2); ctx.fill();
+    // Oeil droit
+    ctx.fillStyle = WHITE;
+    ctx.beginPath(); ctx.ellipse(18,-28,9,10,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = DARK;
+    ctx.beginPath(); ctx.arc(20,-27,5.5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = WHITE;
+    ctx.beginPath(); ctx.arc(21,-29,2,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+
+    // Cils
+    ctx.strokeStyle = DARK; ctx.lineWidth=1.5;
+    [[-26,-37],[-18,-35],[-10,-37]].forEach(([x,y])=>{ ctx.beginPath();ctx.moveTo(x,y+2);ctx.lineTo(x-1,y-2);ctx.stroke(); });
+    [[10,-37],[18,-35],[26,-37]].forEach(([x,y])=>{ ctx.beginPath();ctx.moveTo(x,y+2);ctx.lineTo(x+1,y-2);ctx.stroke(); });
+
+    // Nez
+    ctx.fillStyle = 'rgba(0,0,0,0.08)';
+    ctx.beginPath(); ctx.ellipse(0,-18,5,4,0,0,Math.PI*2); ctx.fill();
+
+    // Sourire
+    ctx.strokeStyle = DARK; ctx.lineWidth=4; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(-16,-8); ctx.quadraticCurveTo(0,8,16,-8); ctx.stroke();
+
+    // Joues
+    ctx.fillStyle = 'rgba(220,90,70,0.18)';
+    ctx.beginPath(); ctx.ellipse(-28,-18,12,7,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(28,-18,12,7,0,0,Math.PI*2); ctx.fill();
+
+    ctx.restore();
+  }
+
+  function drawGround() {
+    segments.forEach(seg => {
+      if (seg.alpha <= 0) return;
+      ctx.save();
+      ctx.globalAlpha = seg.alpha;
+      ctx.fillStyle = GOLD;
+      ctx.fillRect(seg.x, seg.y, SEG_W - 1, 4);
+      // petits carrés de sol
+      ctx.fillStyle = GOLD2;
+      ctx.fillRect(seg.x, seg.y + 4, SEG_W - 1, 3);
+      ctx.restore();
+      // particules qui tombent
+      if (seg.falling) {
+        ctx.save();
+        ctx.globalAlpha = seg.alpha * 0.6;
+        ctx.fillStyle = GOLD;
+        ctx.fillRect(seg.x + 4, seg.y + 8, 4, 4);
+        ctx.fillRect(seg.x + 10, seg.y + 12, 3, 3);
+        ctx.restore();
+      }
+    });
+  }
+
+  let frameCount = 0;
+  function update() {
+    // Faire tomber les segments derrière le perso
+    const behindX = charX - 30;
+    segments.forEach(seg => {
+      if (seg.x + SEG_W < behindX && !seg.falling && seg.alpha > 0) {
+        // déclencher la chute avec un léger délai selon distance
+        const dist = behindX - (seg.x + SEG_W);
+        if (dist > Math.random() * 20) {
+          seg.falling = true;
+          seg.vy = 1 + Math.random() * 2;
+        }
+      }
+      if (seg.falling) {
+        seg.y += seg.vy;
+        seg.vy += 0.3;
+        seg.alpha -= 0.022;
+      }
+    });
+
+    // Recycler les segments tombés : les remettre devant
+    segments.forEach(seg => {
+      if (seg.alpha <= 0) {
+        // Trouver le segment le plus à droite
+        const maxX = Math.max(...segments.map(s => s.x));
+        seg.x = maxX + SEG_W;
+        seg.y = GROUND_Y;
+        seg.vy = 0;
+        seg.falling = false;
+        seg.alpha = 1;
+      }
+    });
+
+    t += 0.016;
+    frameCount++;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    drawGround();
+    const walkCycle = (t * SPEED) % 1;
+    const groundY = GROUND_Y;
+    drawCharacter(charX, groundY - 120, walkCycle);
+    update();
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+})();
+</script>
+</body>
+</html>
