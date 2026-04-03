@@ -79,8 +79,8 @@ nav{
   background:var(--navy);overflow:hidden;
 }
 .hero-left{
-  padding:4rem 3rem 3rem;
-  display:flex;flex-direction:column;justify-content:center;
+  padding:2rem 2.5rem;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
   border-right:1px solid var(--border);
   position:relative;overflow:hidden;
 }
@@ -132,12 +132,16 @@ nav{
 .btn-ghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
 
 .hero-right{
-  display:flex;flex-direction:column;justify-content:flex-end;
-  padding:4rem 2.5rem 0;animation:slideLeft 0.9s 0.5s cubic-bezier(.22,1,.36,1) both;
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:4rem 3rem 0;animation:slideLeft 0.9s 0.5s cubic-bezier(.22,1,.36,1) both;
+  border-left:1px solid var(--border);
+}
+.hero-bottom{
+  display:flex;flex-direction:column;
 }
 .hero-character{
-  flex:1;display:flex;align-items:center;justify-content:center;
-  min-height:320px;
+  flex:1;display:flex;align-items:stretch;justify-content:stretch;
+  min-height:280px;width:100%;overflow:hidden;
 }
 .hero-intro-label{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem}
 .hero-intro-text{font-family:'Playfair Display',serif;font-size:1.1rem;line-height:1.8;color:rgba(255,255,255,0.75);margin-bottom:3rem}
@@ -236,6 +240,7 @@ nav{
 
 /* REFLEXION */
 .reflex-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.reflex-quote-wrap{display:flex;align-items:center;justify-content:center;height:100%}
 .reflex-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.3rem,2.5vw,1.8rem);line-height:1.6;color:var(--navy);position:relative}
 .reflex-quote em{color:var(--gold);font-style:normal}
 .reflex-quote::before{content:'"';font-size:4rem;color:var(--gold);opacity:0.25;display:block;line-height:0.8;margin-bottom:1rem;font-family:'Playfair Display',serif;transition:opacity .3s}
@@ -317,6 +322,270 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
 
 <section class="hero">
   <div class="hero-left">
+    <div class="hero-character" aria-hidden="true">
+      <svg id="skyline-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;">
+        <defs>
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#060E1F"/>
+            <stop offset="60%" stop-color="#0D1B3E"/>
+            <stop offset="100%" stop-color="#162450"/>
+          </linearGradient>
+          <linearGradient id="reflGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0a1428"/>
+            <stop offset="100%" stop-color="#060E1F"/>
+          </linearGradient>
+          <clipPath id="waterClip"><rect x="0" y="210" width="400" height="70"/></clipPath>
+        </defs>
+        <style>
+          @keyframes winBlink{0%,100%{opacity:1}50%{opacity:0.3}}
+          @keyframes starTw{0%,100%{opacity:0.2}50%{opacity:1}}
+          @keyframes moonGlow{0%,100%{filter:drop-shadow(0 0 4px #C9A84C88)}50%{filter:drop-shadow(0 0 10px #C9A84Ccc)}}
+          @keyframes waterShimmer{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+          @keyframes lightBeam{0%,100%{opacity:0.06}50%{opacity:0.13}}
+          .sw1{animation:winBlink 3.1s ease-in-out infinite}
+          .sw2{animation:winBlink 2.4s ease-in-out infinite 0.8s}
+          .sw3{animation:winBlink 4s ease-in-out infinite 1.5s}
+          .sw4{animation:winBlink 2.8s ease-in-out infinite 0.3s}
+          .sw5{animation:winBlink 3.6s ease-in-out infinite 1.1s}
+          .st1{animation:starTw 2s ease-in-out infinite}
+          .st2{animation:starTw 2s ease-in-out infinite 0.6s}
+          .st3{animation:starTw 2s ease-in-out infinite 1.2s}
+          .st4{animation:starTw 3s ease-in-out infinite 0.4s}
+          #moon{animation:moonGlow 4s ease-in-out infinite}
+          #water-shimmer{animation:waterShimmer 3s ease-in-out infinite}
+          #beam1{animation:lightBeam 2.5s ease-in-out infinite}
+          #beam2{animation:lightBeam 2.5s ease-in-out infinite 1.2s}
+        </style>
+
+        <!-- Ciel -->
+        <rect width="400" height="280" fill="url(#skyGrad)"/>
+
+        <!-- Étoiles -->
+        <circle class="st1" cx="22"  cy="18" r="1.2" fill="#C9A84C"/>
+        <circle class="st2" cx="55"  cy="8"  r="0.9" fill="white"/>
+        <circle class="st3" cx="90"  cy="22" r="1"   fill="white"/>
+        <circle class="st4" cx="130" cy="12" r="1.2" fill="#C9A84C"/>
+        <circle class="st1" cx="175" cy="6"  r="0.8" fill="white"/>
+        <circle class="st2" cx="210" cy="20" r="1"   fill="white"/>
+        <circle class="st3" cx="255" cy="9"  r="1.2" fill="#C9A84C"/>
+        <circle class="st4" cx="300" cy="16" r="0.8" fill="white"/>
+        <circle class="st1" cx="340" cy="7"  r="1"   fill="white"/>
+        <circle class="st2" cx="378" cy="19" r="1.2" fill="#C9A84C"/>
+        <circle class="st3" cx="42"  cy="38" r="0.8" fill="white"/>
+        <circle class="st4" cx="320" cy="34" r="0.9" fill="white"/>
+
+        <!-- Lune -->
+        <circle id="moon" cx="340" cy="42" r="18" fill="#C9A84C" opacity="0.9"/>
+        <circle cx="348" cy="38" r="14" fill="#0D1B3E" opacity="0.55"/>
+
+        <!-- Halo de lune -->
+        <circle cx="340" cy="42" r="26" fill="none" stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/>
+
+        <!-- Rayons de lumière (building phare) -->
+        <polygon id="beam1" points="200,80 185,210 215,210" fill="#C9A84C" opacity="0.08"/>
+        <polygon id="beam2" points="200,80 192,210 208,210" fill="#C9A84C" opacity="0.06"/>
+
+        <!-- ── BÂTIMENTS ARRIÈRE-PLAN (plus petits, plus sombres) ── -->
+        <!-- Lot gauche loin -->
+        <rect x="0"   y="155" width="28" height="55" fill="#0a1428"/>
+        <rect x="28"  y="145" width="22" height="65" fill="#0c1630"/>
+        <rect x="50"  y="160" width="18" height="50" fill="#0a1428"/>
+        <rect x="68"  y="148" width="25" height="62" fill="#0c1630"/>
+        <!-- Lot droit loin -->
+        <rect x="310" y="152" width="20" height="58" fill="#0a1428"/>
+        <rect x="330" y="142" width="28" height="68" fill="#0c1630"/>
+        <rect x="358" y="158" width="22" height="52" fill="#0a1428"/>
+        <rect x="380" y="148" width="20" height="62" fill="#0c1630"/>
+
+        <!-- ── BÂTIMENTS PRINCIPAUX ── -->
+
+        <!-- Immeuble 1 — gauche, large -->
+        <rect x="8"  y="120" width="52" height="90" fill="#0F1E40"/>
+        <rect x="20" y="108" width="28" height="15" fill="#0F1E40"/><!-- penthouse -->
+        <!-- fenêtres -->
+        <rect class="sw1" x="14" y="128" width="8" height="10" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw3" x="26" y="128" width="8" height="10" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw2" x="38" y="128" width="8" height="10" fill="#C9A84C" opacity="0.8" rx="1"/>
+        <rect class="sw4" x="50" y="128" width="8" height="10" fill="#C9A84C" opacity="0.4" rx="1"/>
+        <rect class="sw2" x="14" y="144" width="8" height="10" fill="#C9A84C" opacity="0.6" rx="1"/>
+        <rect class="sw5" x="26" y="144" width="8" height="10" fill="#C9A84C" opacity="0.9" rx="1"/>
+        <rect class="sw1" x="38" y="144" width="8" height="10" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw3" x="50" y="144" width="8" height="10" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw4" x="14" y="160" width="8" height="10" fill="#C9A84C" opacity="0.4" rx="1"/>
+        <rect class="sw1" x="38" y="160" width="8" height="10" fill="#C9A84C" opacity="0.6" rx="1"/>
+
+        <!-- Immeuble 2 — tour centrale gauche -->
+        <rect x="68"  y="80"  width="38" height="130" fill="#112040"/>
+        <rect x="75"  y="68"  width="24" height="16"  fill="#112040"/>
+        <rect x="82"  y="58"  width="10" height="14"  fill="#112040"/>
+        <!-- antenne -->
+        <line x1="87" y1="28" x2="87" y2="58" stroke="#C9A84C" stroke-width="1.2" opacity="0.6"/>
+        <circle cx="87" cy="27" r="2.5" fill="#C9A84C" opacity="0.9" class="sw1"/>
+        <!-- fenêtres tour -->
+        <rect class="sw2" x="73" y="88"  width="7" height="9" fill="#C9A84C" opacity="0.8" rx="1"/>
+        <rect class="sw4" x="83" y="88"  width="7" height="9" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw1" x="93" y="88"  width="7" height="9" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw3" x="73" y="102" width="7" height="9" fill="#C9A84C" opacity="0.6" rx="1"/>
+        <rect class="sw5" x="83" y="102" width="7" height="9" fill="#C9A84C" opacity="0.9" rx="1"/>
+        <rect class="sw2" x="93" y="102" width="7" height="9" fill="#C9A84C" opacity="0.4" rx="1"/>
+        <rect class="sw4" x="73" y="116" width="7" height="9" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw1" x="83" y="116" width="7" height="9" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw3" x="93" y="116" width="7" height="9" fill="#C9A84C" opacity="0.8" rx="1"/>
+        <rect class="sw2" x="73" y="130" width="7" height="9" fill="#C9A84C" opacity="0.4" rx="1"/>
+        <rect class="sw5" x="93" y="130" width="7" height="9" fill="#C9A84C" opacity="0.6" rx="1"/>
+        <rect class="sw1" x="73" y="144" width="7" height="9" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw3" x="83" y="144" width="7" height="9" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw4" x="93" y="144" width="7" height="9" fill="#C9A84C" opacity="0.8" rx="1"/>
+
+        <!-- Immeuble 3 — TOUR CENTRALE (la plus haute) -->
+        <rect x="118" y="55"  width="48" height="155" fill="#142248"/>
+        <rect x="128" y="40"  width="28" height="18"  fill="#142248"/>
+        <rect x="135" y="24"  width="14" height="20"  fill="#142248"/>
+        <!-- antenne centrale -->
+        <line x1="142" y1="-5" x2="142" y2="24" stroke="#C9A84C" stroke-width="1.5" opacity="0.7"/>
+        <circle cx="142" cy="-5" r="3" fill="#C9A84C" class="sw2"/>
+        <!-- fenêtres tour centrale -->
+        <rect class="sw1" x="124" y="62"  width="8" height="10" fill="#C9A84C" opacity="0.9" rx="1"/>
+        <rect class="sw3" x="136" y="62"  width="8" height="10" fill="#C9A84C" opacity="0.6" rx="1"/>
+        <rect class="sw5" x="148" y="62"  width="8" height="10" fill="#C9A84C" opacity="0.8" rx="1"/>
+        <rect class="sw2" x="124" y="77"  width="8" height="10" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw4" x="136" y="77"  width="8" height="10" fill="#C9A84C" opacity="0.9" rx="1"/>
+        <rect class="sw1" x="148" y="77"  width="8" height="10" fill="#C9A84C" opacity="0.4" rx="1"/>
+        <rect class="sw3" x="124" y="92"  width="8" height="10" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw5" x="136" y="92"  width="8" height="10" fill="#C9A84C" opacity="0.6" rx="1"/>
+        <rect class="sw2" x="148" y="92"  width="8" height="10" fill="#C9A84C" opacity="0.8" rx="1"/>
+        <rect class="sw4" x="124" y="107" width="8" height="10" fill="#C9A84C" opacity="0.4" rx="1"/>
+        <rect class="sw1" x="136" y="107" width="8" height="10" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw3" x="148" y="107" width="8" height="10" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw5" x="124" y="122" width="8" height="10" fill="#C9A84C" opacity="0.9" rx="1"/>
+        <rect class="sw2" x="148" y="122" width="8" height="10" fill="#C9A84C" opacity="0.6" rx="1"/>
+        <rect class="sw4" x="124" y="137" width="8" height="10" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw1" x="136" y="137" width="8" height="10" fill="#C9A84C" opacity="0.8" rx="1"/>
+        <rect class="sw3" x="148" y="137" width="8" height="10" fill="#C9A84C" opacity="0.4" rx="1"/>
+        <!-- bandeau lumineux central -->
+        <rect x="118" y="152" width="48" height="3" fill="#C9A84C" opacity="0.35"/>
+
+        <!-- Immeuble 4 — droite de la tour -->
+        <rect x="174" y="95"  width="42" height="115" fill="#0F1E40"/>
+        <rect x="181" y="82"  width="28" height="16"  fill="#0F1E40"/>
+        <line x1="195" y1="52" x2="195" y2="82" stroke="#C9A84C" stroke-width="1" opacity="0.5"/>
+        <circle cx="195" cy="51" r="2" fill="#C9A84C" class="sw3"/>
+        <rect class="sw3" x="180" y="102" width="7" height="9" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw1" x="190" y="102" width="7" height="9" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw5" x="200" y="102" width="7" height="9" fill="#C9A84C" opacity="0.8" rx="1"/>
+        <rect class="sw2" x="180" y="116" width="7" height="9" fill="#C9A84C" opacity="0.4" rx="1"/>
+        <rect class="sw4" x="190" y="116" width="7" height="9" fill="#C9A84C" opacity="0.6" rx="1"/>
+        <rect class="sw3" x="200" y="116" width="7" height="9" fill="#C9A84C" opacity="0.9" rx="1"/>
+        <rect class="sw1" x="180" y="130" width="7" height="9" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw5" x="200" y="130" width="7" height="9" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw2" x="180" y="144" width="7" height="9" fill="#C9A84C" opacity="0.8" rx="1"/>
+        <rect class="sw4" x="190" y="144" width="7" height="9" fill="#C9A84C" opacity="0.4" rx="1"/>
+        <rect class="sw3" x="200" y="144" width="7" height="9" fill="#C9A84C" opacity="0.6" rx="1"/>
+        <rect class="sw1" x="180" y="158" width="7" height="9" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw5" x="190" y="158" width="7" height="9" fill="#C9A84C" opacity="0.5" rx="1"/>
+
+        <!-- Immeuble 5 — large droite -->
+        <rect x="224" y="105" width="55" height="105" fill="#112040"/>
+        <rect x="234" y="92"  width="35" height="16"  fill="#112040"/>
+        <rect class="sw4" x="230" y="112" width="9" height="11" fill="#C9A84C" opacity="0.6" rx="1"/>
+        <rect class="sw2" x="243" y="112" width="9" height="11" fill="#C9A84C" opacity="0.8" rx="1"/>
+        <rect class="sw5" x="256" y="112" width="9" height="11" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw1" x="269" y="112" width="9" height="11" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw3" x="230" y="128" width="9" height="11" fill="#C9A84C" opacity="0.9" rx="1"/>
+        <rect class="sw4" x="243" y="128" width="9" height="11" fill="#C9A84C" opacity="0.4" rx="1"/>
+        <rect class="sw2" x="256" y="128" width="9" height="11" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw5" x="269" y="128" width="9" height="11" fill="#C9A84C" opacity="0.6" rx="1"/>
+        <rect class="sw1" x="230" y="144" width="9" height="11" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw3" x="256" y="144" width="9" height="11" fill="#C9A84C" opacity="0.8" rx="1"/>
+        <rect class="sw4" x="230" y="160" width="9" height="11" fill="#C9A84C" opacity="0.4" rx="1"/>
+        <rect class="sw2" x="243" y="160" width="9" height="11" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw5" x="269" y="160" width="9" height="11" fill="#C9A84C" opacity="0.5" rx="1"/>
+
+        <!-- Immeuble 6 — extrême droite -->
+        <rect x="288" y="90"  width="35" height="120" fill="#0F1E40"/>
+        <rect x="295" y="76"  width="22" height="17"  fill="#0F1E40"/>
+        <line x1="306" y1="46" x2="306" y2="76" stroke="#C9A84C" stroke-width="1" opacity="0.5"/>
+        <circle cx="306" cy="45" r="2" fill="#C9A84C" class="sw4"/>
+        <rect class="sw2" x="294" y="98"  width="7" height="9" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw5" x="304" y="98"  width="7" height="9" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw1" x="314" y="98"  width="7" height="9" fill="#C9A84C" opacity="0.8" rx="1"/>
+        <rect class="sw3" x="294" y="112" width="7" height="9" fill="#C9A84C" opacity="0.4" rx="1"/>
+        <rect class="sw4" x="304" y="112" width="7" height="9" fill="#C9A84C" opacity="0.9" rx="1"/>
+        <rect class="sw2" x="314" y="112" width="7" height="9" fill="#C9A84C" opacity="0.6" rx="1"/>
+        <rect class="sw5" x="294" y="126" width="7" height="9" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw1" x="314" y="126" width="7" height="9" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw3" x="294" y="140" width="7" height="9" fill="#C9A84C" opacity="0.8" rx="1"/>
+        <rect class="sw4" x="304" y="140" width="7" height="9" fill="#C9A84C" opacity="0.4" rx="1"/>
+        <rect class="sw2" x="314" y="140" width="7" height="9" fill="#C9A84C" opacity="0.6" rx="1"/>
+        <rect class="sw1" x="294" y="154" width="7" height="9" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw5" x="304" y="154" width="7" height="9" fill="#C9A84C" opacity="0.9" rx="1"/>
+        <rect class="sw3" x="314" y="154" width="7" height="9" fill="#C9A84C" opacity="0.5" rx="1"/>
+
+        <!-- Immeuble 7 — droite extrême large -->
+        <rect x="330" y="115" width="70" height="95" fill="#0c1834"/>
+        <rect class="sw4" x="336" y="122" width="8" height="10" fill="#C9A84C" opacity="0.6" rx="1"/>
+        <rect class="sw1" x="348" y="122" width="8" height="10" fill="#C9A84C" opacity="0.8" rx="1"/>
+        <rect class="sw3" x="360" y="122" width="8" height="10" fill="#C9A84C" opacity="0.4" rx="1"/>
+        <rect class="sw2" x="372" y="122" width="8" height="10" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw5" x="336" y="136" width="8" height="10" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw4" x="360" y="136" width="8" height="10" fill="#C9A84C" opacity="0.9" rx="1"/>
+        <rect class="sw1" x="372" y="136" width="8" height="10" fill="#C9A84C" opacity="0.6" rx="1"/>
+        <rect class="sw3" x="336" y="150" width="8" height="10" fill="#C9A84C" opacity="0.7" rx="1"/>
+        <rect class="sw2" x="348" y="150" width="8" height="10" fill="#C9A84C" opacity="0.4" rx="1"/>
+        <rect class="sw5" x="372" y="150" width="8" height="10" fill="#C9A84C" opacity="0.8" rx="1"/>
+        <rect class="sw4" x="336" y="164" width="8" height="10" fill="#C9A84C" opacity="0.5" rx="1"/>
+        <rect class="sw1" x="360" y="164" width="8" height="10" fill="#C9A84C" opacity="0.7" rx="1"/>
+
+        <!-- ── SOL / EAU ── -->
+        <!-- Ligne de sol -->
+        <rect x="0" y="208" width="400" height="2" fill="#C9A84C" opacity="0.25"/>
+
+        <!-- Eau (reflets) -->
+        <rect x="0" y="210" width="400" height="70" fill="url(#waterGrad)"/>
+
+        <!-- Reflets des bâtiments dans l'eau -->
+        <g clip-path="url(#waterClip)" opacity="0.35" id="water-shimmer">
+          <!-- Tour centrale reflet -->
+          <rect x="118" y="210" width="48" height="40" fill="#142248"/>
+          <rect class="sw1" x="124" y="213" width="8" height="6" fill="#C9A84C" opacity="0.6" rx="1"/>
+          <rect class="sw3" x="136" y="213" width="8" height="6" fill="#C9A84C" opacity="0.4" rx="1"/>
+          <rect class="sw5" x="148" y="213" width="8" height="6" fill="#C9A84C" opacity="0.7" rx="1"/>
+          <rect class="sw2" x="124" y="223" width="8" height="5" fill="#C9A84C" opacity="0.3" rx="1"/>
+          <rect class="sw4" x="148" y="223" width="8" height="5" fill="#C9A84C" opacity="0.5" rx="1"/>
+          <!-- Tour 2 reflet -->
+          <rect x="68" y="210" width="38" height="32" fill="#112040"/>
+          <rect class="sw3" x="73" y="214" width="6" height="6" fill="#C9A84C" opacity="0.5" rx="1"/>
+          <rect class="sw1" x="83" y="214" width="6" height="6" fill="#C9A84C" opacity="0.3" rx="1"/>
+          <!-- Tour 4 reflet -->
+          <rect x="174" y="210" width="42" height="28" fill="#0F1E40"/>
+          <rect class="sw5" x="180" y="214" width="6" height="5" fill="#C9A84C" opacity="0.4" rx="1"/>
+          <rect class="sw2" x="190" y="214" width="6" height="5" fill="#C9A84C" opacity="0.6" rx="1"/>
+          <!-- Tour 5 reflet -->
+          <rect x="224" y="210" width="55" height="25" fill="#112040"/>
+          <rect class="sw4" x="230" y="213" width="8" height="5" fill="#C9A84C" opacity="0.5" rx="1"/>
+          <rect class="sw1" x="243" y="213" width="8" height="5" fill="#C9A84C" opacity="0.3" rx="1"/>
+          <rect class="sw3" x="256" y="213" width="8" height="5" fill="#C9A84C" opacity="0.4" rx="1"/>
+        </g>
+
+        <!-- Ondulations de l'eau -->
+        <path d="M0,218 Q40,215 80,218 Q120,221 160,218 Q200,215 240,218 Q280,221 320,218 Q360,215 400,218" stroke="#C9A84C" stroke-width="0.6" fill="none" opacity="0.2"/>
+        <path d="M0,228 Q50,225 100,228 Q150,231 200,228 Q250,225 300,228 Q350,231 400,228" stroke="#C9A84C" stroke-width="0.4" fill="none" opacity="0.12"/>
+        <path d="M0,238 Q60,235 120,238 Q180,241 240,238 Q300,235 360,238 Q380,239 400,238" stroke="#C9A84C" stroke-width="0.3" fill="none" opacity="0.08"/>
+
+        <!-- Reflet de la lune dans l'eau -->
+        <ellipse cx="340" cy="225" rx="12" ry="4" fill="#C9A84C" opacity="0.12"/>
+        <ellipse cx="340" cy="234" rx="7"  ry="2" fill="#C9A84C" opacity="0.07"/>
+
+        <!-- Voile de brume légère en bas -->
+        <rect x="0" y="195" width="400" height="15" fill="url(#reflGrad)"/>
+      </svg>
+    </div>
+  </div>
+  <div class="hero-right">
     <p class="hero-eyebrow">Portfolio · Présentation professionnelle</p>
     <div class="hero-name">VIVIER</div>
     <div class="hero-name-sub">Nicolas</div>
@@ -325,18 +594,14 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
       <a href="#alternance" class="btn btn-gold">Mon alternance</a>
       <a href="#contact" class="btn btn-ghost">Me contacter</a>
     </div>
-  </div>
-  <div class="hero-right">
-    <div class="hero-character" aria-hidden="true">
-      <canvas id="walkCanvas" width="400" height="280" style="display:block;margin:0 auto;"></canvas>
-    </div>
-    </div>
-    <p class="hero-intro-label">En quelques mots</p>
-    <p class="hero-intro-text">Passionné par la gestion et l'organisation, je développe mes compétences au sein de Véolia Grand Est tout en poursuivant mon BUT GEA à l'IUT Nancy-Charlemagne.</p>
-    <div class="hero-stats">
-      <div class="hstat"><div class="hstat-n">BUT</div><div class="hstat-l">GEA · IUT Nancy</div></div>
-      <div class="hstat"><div class="hstat-n">2e</div><div class="hstat-l">Année</div></div>
-      <div class="hstat"><div class="hstat-n">5+</div><div class="hstat-l">Expériences</div></div>
+    <div class="hero-bottom">
+      <p class="hero-intro-label">En quelques mots</p>
+      <p class="hero-intro-text">Passionné par la gestion et l'organisation, je développe mes compétences au sein de Véolia Grand Est tout en poursuivant mon BUT GEA à l'IUT Nancy-Charlemagne.</p>
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-n">BUT</div><div class="hstat-l">GEA · IUT Nancy</div></div>
+        <div class="hstat"><div class="hstat-n">2e</div><div class="hstat-l">Année</div></div>
+        <div class="hstat"><div class="hstat-n">5+</div><div class="hstat-l">Expériences</div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -411,8 +676,10 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
   <div class="sec-inner">
     <div class="sec-head reveal"><span class="sec-num">04</span><h2 class="sec-title"><em>Réflexions</em></h2></div>
     <div class="reflex-grid">
-      <p class="reflex-quote reveal-left">Mon alternance chez <em>Véolia</em> confirme que le management et la gestion de projet sont ma voie.</p>
-      <p class="reflex-text reveal-right">Suite aux compétences acquises lors de mon parcours, et plus particulièrement grâce à mon alternance au sein du service facturation de Véolia, j'ai confirmé mon orientation vers le <strong>parcours GEMA</strong>.<br><br>Mon intérêt à <strong>contribuer à une organisation en pilotant une équipe</strong> ou en tant que chef de projet se trouve pleinement nourri par cette expérience. La gestion de données, l'amélioration des processus et la collaboration inter-services renforcent chaque jour ma conviction.</p>
+      <p class="reflex-text reveal-left">Suite aux compétences acquises lors de mon parcours, et plus particulièrement grâce à mon alternance au sein du service facturation de Véolia, j'ai confirmé mon orientation vers le <strong>parcours GEMA</strong>.<br><br>Mon intérêt à <strong>contribuer à une organisation en pilotant une équipe</strong> ou en tant que chef de projet se trouve pleinement nourri par cette expérience. La gestion de données, l'amélioration des processus et la collaboration inter-services renforcent chaque jour ma conviction.</p>
+      <div class="reflex-quote-wrap reveal-right">
+        <p class="reflex-quote">Mon alternance chez <em>Véolia</em> confirme que le management et la gestion de projet sont ma voie.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -483,270 +750,3 @@ document.querySelectorAll('a,button,.comp-card,.acard,.mission,.obj-card').forEa
 });
 
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
-  });
-}, { threshold: 0.12 });
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => observer.observe(el));
-
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-links a');
-window.addEventListener('scroll', () => {
-  let current = '';
-  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id'); });
-  navLinks.forEach(a => { a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : ''; });
-});
-
-/* ── CANVAS WALKING CHARACTER ── */
-(function(){
-  const canvas = document.getElementById('walkCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
-
-  const GOLD  = '#C9A84C';
-  const GOLD2 = '#B8943A';
-  const GOLD3 = '#8a6010';
-  const NAVY  = '#0D1B3E';
-  const NAVY2 = '#1E3060';
-  const NAVY3 = '#0a1020';
-  const SKIN  = '#C9A84C';
-  const DARK  = '#1A1200';
-  const WHITE = '#FFFFFF';
-  const SPEED = 0.42; // marche lente
-
-  // Point de fuite centré haut
-  const VPX = W * 0.5;
-  const VPY = H * 0.18;
-
-  // Le perso reste centré, les escaliers défilent
-  const CHAR_X = W * 0.5;
-  const CHAR_Y = H - 28;
-
-  // Projection perspective : z=0 loin, z=1 proche
-  function proj(xRel, z) {
-    const s  = 0.08 + z * 0.92;
-    const py = VPY + (CHAR_Y - VPY) * z;
-    const px = VPX + xRel * s * W * 0.62;
-    return { px, py, s };
-  }
-
-  // ── ESCALIERS ──
-  // Chaque marche est une tranche de profondeur z
-  // Le perso monte : les marches avancent du fond vers lui
-  const N_STEPS = 14;       // nombre de marches visibles
-  const STEP_W  = 1.1;      // largeur relative (en xRel)
-  let   scroll  = 0;        // avancement continu
-
-  // Hauteur de la marche : plus grande = effet plus prononcé
-  // On calcule la hauteur en px selon z
-  function stepHeight(z) {
-    return 6 + z * 22;
-  }
-
-  // Dessine une marche en perspective à profondeur z
-  // La marche occupe z..z+dz en profondeur
-  function drawStep(z, dz, alpha) {
-    if (alpha <= 0) return;
-    ctx.save();
-    ctx.globalAlpha = Math.min(1, alpha);
-
-    const zFront = Math.min(z + dz, 1);
-
-    // 4 coins du dessus de la marche
-    const xL = -STEP_W / 2;
-    const xR =  STEP_W / 2;
-    const pTL = proj(xL, z);      // arrière gauche
-    const pTR = proj(xR, z);      // arrière droit
-    const pBL = proj(xL, zFront); // avant gauche
-    const pBR = proj(xR, zFront); // avant droit
-
-    const hFront = stepHeight(zFront);
-
-    // ── Dessus de la marche (face horizontale)
-    const bright = 0.45 + z * 0.55;
-    ctx.fillStyle = `rgba(201,168,76,${bright})`;
-    ctx.beginPath();
-    ctx.moveTo(pTL.px, pTL.py);
-    ctx.lineTo(pTR.px, pTR.py);
-    ctx.lineTo(pBR.px, pBR.py);
-    ctx.lineTo(pBL.px, pBL.py);
-    ctx.closePath();
-    ctx.fill();
-    // grille du dessus
-    ctx.strokeStyle = `rgba(13,27,62,${0.35 * bright})`;
-    ctx.lineWidth = 0.8;
-    ctx.stroke();
-
-    // ── Face avant de la marche (contremarche verticale)
-    const darkBright = 0.3 + z * 0.5;
-    ctx.fillStyle = `rgba(138,96,16,${darkBright})`;
-    ctx.beginPath();
-    ctx.moveTo(pBL.px, pBL.py);
-    ctx.lineTo(pBR.px, pBR.py);
-    ctx.lineTo(pBR.px, pBR.py + hFront);
-    ctx.lineTo(pBL.px, pBL.py + hFront);
-    ctx.closePath();
-    ctx.fill();
-    ctx.strokeStyle = `rgba(10,20,40,${0.3 * darkBright})`;
-    ctx.lineWidth = 0.7;
-    ctx.stroke();
-
-    // ── Côté gauche de la marche
-    const sideBright = 0.25 + z * 0.4;
-    ctx.fillStyle = `rgba(100,70,10,${sideBright})`;
-    ctx.beginPath();
-    ctx.moveTo(pTL.px, pTL.py);
-    ctx.lineTo(pBL.px, pBL.py);
-    ctx.lineTo(pBL.px, pBL.py + hFront);
-    ctx.lineTo(pTL.px, pTL.py + hFront);
-    ctx.closePath();
-    ctx.fill();
-
-    // ── Côté droit
-    ctx.fillStyle = `rgba(100,70,10,${sideBright * 0.85})`;
-    ctx.beginPath();
-    ctx.moveTo(pTR.px, pTR.py);
-    ctx.lineTo(pBR.px, pBR.py);
-    ctx.lineTo(pBR.px, pBR.py + hFront);
-    ctx.lineTo(pTR.px, pTR.py + hFront);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.restore();
-  }
-
-  let t = 0;
-
-  function drawCharacter(cx, cy, walkT) {
-    const cycle = Math.PI * 2 * walkT;
-    const bobY  = Math.abs(Math.sin(cycle)) * -5;
-    const legLY = Math.sin(cycle) * 13;
-    const legRY = Math.sin(cycle + Math.PI) * 13;
-    const armLR = Math.sin(cycle + Math.PI) * 13;
-    const armRR = Math.sin(cycle) * 13;
-    const base  = cy + bobY;
-
-    function rr(x,y,w,h,r,c){
-      ctx.fillStyle=c;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill();
-    }
-
-    // ombre
-    ctx.save(); ctx.globalAlpha=0.13; ctx.fillStyle=DARK;
-    ctx.beginPath(); ctx.ellipse(cx,cy+2,26,5,0,0,Math.PI*2); ctx.fill();
-    ctx.restore();
-
-    // jambe gauche
-    ctx.save(); ctx.translate(cx-11, base+58);
-    ctx.translate(0, legLY>0?0:legLY*0.3);
-    rr(-8,0,16,26,8,SKIN); rr(-6,24,12,22,6,GOLD2);
-    ctx.fillStyle=NAVY; ctx.beginPath(); ctx.ellipse(1,49,13,6,0,0,Math.PI*2); ctx.fill();
-    ctx.restore();
-
-    // jambe droite
-    ctx.save(); ctx.translate(cx+11, base+58);
-    ctx.translate(0, legRY>0?0:legRY*0.3);
-    rr(-8,0,16,26,8,GOLD2); rr(-6,24,12,22,6,'#a07830');
-    ctx.fillStyle='#0a1428'; ctx.beginPath(); ctx.ellipse(1,49,13,6,0,0,Math.PI*2); ctx.fill();
-    ctx.restore();
-
-    // bras gauche
-    ctx.save(); ctx.translate(cx-26, base+6);
-    ctx.rotate(armLR*Math.PI/180);
-    rr(-9,0,18,42,9,GOLD2);
-    ctx.fillStyle=GOLD2; ctx.beginPath(); ctx.ellipse(0,44,10,9,0,0,Math.PI*2); ctx.fill();
-    ctx.restore();
-
-    // corps
-    ctx.save(); ctx.translate(cx, base);
-    rr(-28,0,56,62,16,NAVY2);
-    rr(-10,0,20,12,5,GOLD+'44');
-    ctx.fillStyle=GOLD; ctx.globalAlpha=0.8;
-    ctx.beginPath(); ctx.moveTo(0,12); ctx.lineTo(-5,28); ctx.lineTo(0,23); ctx.lineTo(5,28); ctx.closePath(); ctx.fill();
-    ctx.globalAlpha=1;
-    ctx.fillStyle=GOLD+'55';
-    ctx.beginPath(); ctx.arc(0,38,2.5,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(0,50,2.5,0,Math.PI*2); ctx.fill();
-    ctx.restore();
-
-    // bras droit
-    ctx.save(); ctx.translate(cx+26, base+6);
-    ctx.rotate(armRR*Math.PI/180);
-    rr(-9,0,18,42,9,SKIN);
-    ctx.fillStyle=SKIN; ctx.beginPath(); ctx.ellipse(0,44,10,9,0,0,Math.PI*2); ctx.fill();
-    ctx.restore();
-
-    // cou
-    ctx.save(); ctx.translate(cx,base); rr(-8,-17,16,19,7,SKIN); ctx.restore();
-
-    // tête
-    ctx.save(); ctx.translate(cx, base-17);
-    ctx.fillStyle=SKIN;
-    ctx.beginPath(); ctx.ellipse(-35,-26,7,10,0,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(35,-26,7,10,0,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle=SKIN;
-    ctx.beginPath(); ctx.ellipse(0,-28,34,36,0,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle=DARK;
-    ctx.beginPath(); ctx.ellipse(0,-58,30,13,0,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(-26,-50,10,18,0,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(26,-50,10,18,0,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(-13,-62,9,12,0,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(13,-63,9,12,0,0,Math.PI*2); ctx.fill();
-    ctx.strokeStyle=DARK; ctx.lineWidth=3; ctx.lineCap='round';
-    ctx.beginPath(); ctx.moveTo(-24,-42); ctx.quadraticCurveTo(-16,-47,-8,-42); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(8,-42); ctx.quadraticCurveTo(16,-47,24,-42); ctx.stroke();
-    const blinkT=(t*0.6)%4;
-    const bs=(blinkT>3.7)?Math.max(0.05,1-(blinkT-3.7)*20):1;
-    ctx.save(); ctx.scale(1,bs);
-    ctx.fillStyle=WHITE;
-    ctx.beginPath(); ctx.ellipse(-17,-26,8,9,0,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(17,-26,8,9,0,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle=DARK;
-    ctx.beginPath(); ctx.arc(-15,-25,5,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(19,-25,5,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle=WHITE;
-    ctx.beginPath(); ctx.arc(-14,-27,1.8,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(20,-27,1.8,0,Math.PI*2); ctx.fill();
-    ctx.restore();
-    ctx.fillStyle='rgba(0,0,0,0.08)';
-    ctx.beginPath(); ctx.ellipse(0,-16,4,3,0,0,Math.PI*2); ctx.fill();
-    ctx.strokeStyle=DARK; ctx.lineWidth=3.5; ctx.lineCap='round';
-    ctx.beginPath(); ctx.moveTo(-14,-7); ctx.quadraticCurveTo(0,8,14,-7); ctx.stroke();
-    ctx.fillStyle='rgba(220,90,70,0.18)';
-    ctx.beginPath(); ctx.ellipse(-26,-17,11,6,0,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(26,-17,11,6,0,0,Math.PI*2); ctx.fill();
-    ctx.restore();
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-
-    // Avancement des escaliers
-    scroll += 0.008;
-
-    // Dessiner les marches du plus loin au plus proche
-    for (let i = 0; i < N_STEPS; i++) {
-      // z de chaque marche : défile de 0 (fond) vers 1 (avant)
-      const dz   = 1 / N_STEPS;
-      let   z    = ((i / N_STEPS + scroll) % 1);
-      const zEnd = Math.min(z + dz, 1);
-      // fade-in au lointain, fade-out à l'avant
-      let alpha = 1;
-      if (z < 0.06) alpha = z / 0.06;
-      if (z > 0.88) alpha = Math.max(0, 1 - (z - 0.88) / 0.12);
-      drawStep(z, dz, alpha);
-    }
-
-    // Perso par-dessus
-    const walkCycle = (t * SPEED) % 1;
-    drawCharacter(CHAR_X, CHAR_Y - 118, walkCycle);
-
-    t += 0.016;
-    requestAnimationFrame(draw);
-  }
-
-  draw();
-})();
-</script>
-</body>
-</html>
