@@ -506,106 +506,112 @@ window.addEventListener('scroll', () => {
 
   const GOLD  = '#C9A84C';
   const GOLD2 = '#B8943A';
+  const GOLD3 = '#8a6010';
+  const NAVY  = '#0D1B3E';
   const NAVY2 = '#1E3060';
+  const NAVY3 = '#0a1020';
   const SKIN  = '#C9A84C';
   const DARK  = '#1A1200';
   const WHITE = '#FFFFFF';
-  const SPEED = 0.5;
+  const SPEED = 0.42; // marche lente
 
-  // Point de fuite — horizon au centre haut
+  // Point de fuite centré haut
   const VPX = W * 0.5;
-  const VPY = H * 0.38;
+  const VPY = H * 0.18;
 
-  // Le perso est fixe au centre bas
+  // Le perso reste centré, les escaliers défilent
   const CHAR_X = W * 0.5;
-  const CHAR_Y = H - 30;
+  const CHAR_Y = H - 28;
 
-  // Dalles en perspective : rangées qui arrivent du fond vers l'avant
-  // Chaque rangée a une profondeur z (0=loin, 1=proche)
-  const NUM_ROWS = 10;
-  const TILE_COLS = 5; // colonnes de dalles (gauche à droite)
-  let tiles = [];
-  let scrollZ = 0; // défilement vers l'avant
-
-  function initTiles() {
-    tiles = [];
-    for (let row = 0; row < NUM_ROWS; row++) {
-      for (let col = 0; col < TILE_COLS; col++) {
-        tiles.push({
-          row, col,
-          z: row / (NUM_ROWS - 1), // 0=fond, 1=devant
-          falling: false,
-          fallY: 0, fallVY: 0, fallAlpha: 1,
-          crumble: false
-        });
-      }
-    }
-  }
-  initTiles();
-
-  // Projeter un point 3D (x relatif au centre, z=0..1) vers 2D canvas
-  function project(xRel, zDepth) {
-    // zDepth : 0=lointain (haut), 1=proche (bas)
-    const scale = 0.15 + zDepth * 0.85;
-    const py = VPY + (CHAR_Y - VPY) * zDepth;
-    const px = VPX + xRel * scale * (W * 0.55);
-    return { px, py, scale };
+  // Projection perspective : z=0 loin, z=1 proche
+  function proj(xRel, z) {
+    const s  = 0.08 + z * 0.92;
+    const py = VPY + (CHAR_Y - VPY) * z;
+    const px = VPX + xRel * s * W * 0.62;
+    return { px, py, s };
   }
 
-  // Dessiner une dalle en perspective
-  function drawTile(col, zDepth, falling, fallY, fallAlpha, crumble) {
-    const COLS = TILE_COLS;
-    const xRel = (col / (COLS - 1) - 0.5) * 2; // -1 à +1
-    const xRelNext = ((col + 1) / (COLS - 1) - 0.5) * 2;
+  // ── ESCALIERS ──
+  // Chaque marche est une tranche de profondeur z
+  // Le perso monte : les marches avancent du fond vers lui
+  const N_STEPS = 14;       // nombre de marches visibles
+  const STEP_W  = 1.1;      // largeur relative (en xRel)
+  let   scroll  = 0;        // avancement continu
 
-    const p0 = project(xRel,     zDepth);
-    const p1 = project(xRelNext, zDepth);
+  // Hauteur de la marche : plus grande = effet plus prononcé
+  // On calcule la hauteur en px selon z
+  function stepHeight(z) {
+    return 6 + z * 22;
+  }
 
-    // Profondeur de la rangée suivante (un peu plus proche)
-    const dz = 1 / (NUM_ROWS - 1);
-    const zFront = Math.min(zDepth + dz * 0.5, 1);
-    const p2 = project(xRelNext, zFront);
-    const p3 = project(xRel,     zFront);
+  // Dessine une marche en perspective à profondeur z
+  // La marche occupe z..z+dz en profondeur
+  function drawStep(z, dz, alpha) {
+    if (alpha <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = Math.min(1, alpha);
 
-    if (falling) {
-      ctx.save();
-      ctx.globalAlpha = Math.max(0, fallAlpha);
-      ctx.translate(0, fallY);
-    } else {
-      ctx.save();
-      ctx.globalAlpha = 1;
-    }
+    const zFront = Math.min(z + dz, 1);
 
-    // Dessus de la dalle
-    const brightness = 0.5 + zDepth * 0.5;
-    ctx.fillStyle = crumble
-      ? `rgba(180,130,40,${0.6 * brightness})`
-      : `rgba(201,168,76,${brightness})`;
+    // 4 coins du dessus de la marche
+    const xL = -STEP_W / 2;
+    const xR =  STEP_W / 2;
+    const pTL = proj(xL, z);      // arrière gauche
+    const pTR = proj(xR, z);      // arrière droit
+    const pBL = proj(xL, zFront); // avant gauche
+    const pBR = proj(xR, zFront); // avant droit
+
+    const hFront = stepHeight(zFront);
+
+    // ── Dessus de la marche (face horizontale)
+    const bright = 0.45 + z * 0.55;
+    ctx.fillStyle = `rgba(201,168,76,${bright})`;
     ctx.beginPath();
-    ctx.moveTo(p0.px, p0.py);
-    ctx.lineTo(p1.px, p1.py);
-    ctx.lineTo(p2.px, p2.py);
-    ctx.lineTo(p3.px, p3.py);
+    ctx.moveTo(pTL.px, pTL.py);
+    ctx.lineTo(pTR.px, pTR.py);
+    ctx.lineTo(pBR.px, pBR.py);
+    ctx.lineTo(pBL.px, pBL.py);
+    ctx.closePath();
+    ctx.fill();
+    // grille du dessus
+    ctx.strokeStyle = `rgba(13,27,62,${0.35 * bright})`;
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+
+    // ── Face avant de la marche (contremarche verticale)
+    const darkBright = 0.3 + z * 0.5;
+    ctx.fillStyle = `rgba(138,96,16,${darkBright})`;
+    ctx.beginPath();
+    ctx.moveTo(pBL.px, pBL.py);
+    ctx.lineTo(pBR.px, pBR.py);
+    ctx.lineTo(pBR.px, pBR.py + hFront);
+    ctx.lineTo(pBL.px, pBL.py + hFront);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = `rgba(10,20,40,${0.3 * darkBright})`;
+    ctx.lineWidth = 0.7;
+    ctx.stroke();
+
+    // ── Côté gauche de la marche
+    const sideBright = 0.25 + z * 0.4;
+    ctx.fillStyle = `rgba(100,70,10,${sideBright})`;
+    ctx.beginPath();
+    ctx.moveTo(pTL.px, pTL.py);
+    ctx.lineTo(pBL.px, pBL.py);
+    ctx.lineTo(pBL.px, pBL.py + hFront);
+    ctx.lineTo(pTL.px, pTL.py + hFront);
     ctx.closePath();
     ctx.fill();
 
-    // Grille (bordure)
-    ctx.strokeStyle = `rgba(13,27,62,${0.4 * brightness})`;
-    ctx.lineWidth = 1;
-    ctx.stroke();
-
-    // Côté avant (épaisseur 3D)
-    if (!falling) {
-      const thick = 4 * zDepth;
-      ctx.fillStyle = `rgba(150,110,30,${brightness})`;
-      ctx.beginPath();
-      ctx.moveTo(p3.px, p3.py);
-      ctx.lineTo(p2.px, p2.py);
-      ctx.lineTo(p2.px, p2.py + thick);
-      ctx.lineTo(p3.px, p3.py + thick);
-      ctx.closePath();
-      ctx.fill();
-    }
+    // ── Côté droit
+    ctx.fillStyle = `rgba(100,70,10,${sideBright * 0.85})`;
+    ctx.beginPath();
+    ctx.moveTo(pTR.px, pTR.py);
+    ctx.lineTo(pBR.px, pBR.py);
+    ctx.lineTo(pBR.px, pBR.py + hFront);
+    ctx.lineTo(pTR.px, pTR.py + hFront);
+    ctx.closePath();
+    ctx.fill();
 
     ctx.restore();
   }
@@ -615,10 +621,10 @@ window.addEventListener('scroll', () => {
   function drawCharacter(cx, cy, walkT) {
     const cycle = Math.PI * 2 * walkT;
     const bobY  = Math.abs(Math.sin(cycle)) * -5;
-    const legLY = Math.sin(cycle) * 14;
-    const legRY = Math.sin(cycle + Math.PI) * 14;
-    const armLR = Math.sin(cycle + Math.PI) * 14;
-    const armRR = Math.sin(cycle) * 14;
+    const legLY = Math.sin(cycle) * 13;
+    const legRY = Math.sin(cycle + Math.PI) * 13;
+    const armLR = Math.sin(cycle + Math.PI) * 13;
+    const armRR = Math.sin(cycle) * 13;
     const base  = cy + bobY;
 
     function rr(x,y,w,h,r,c){
@@ -626,7 +632,7 @@ window.addEventListener('scroll', () => {
     }
 
     // ombre
-    ctx.save(); ctx.globalAlpha=0.15; ctx.fillStyle=DARK;
+    ctx.save(); ctx.globalAlpha=0.13; ctx.fillStyle=DARK;
     ctx.beginPath(); ctx.ellipse(cx,cy+2,26,5,0,0,Math.PI*2); ctx.fill();
     ctx.restore();
 
@@ -634,14 +640,14 @@ window.addEventListener('scroll', () => {
     ctx.save(); ctx.translate(cx-11, base+58);
     ctx.translate(0, legLY>0?0:legLY*0.3);
     rr(-8,0,16,26,8,SKIN); rr(-6,24,12,22,6,GOLD2);
-    ctx.fillStyle='#0D1B3E'; ctx.beginPath(); ctx.ellipse(1,48,13,6,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=NAVY; ctx.beginPath(); ctx.ellipse(1,49,13,6,0,0,Math.PI*2); ctx.fill();
     ctx.restore();
 
     // jambe droite
     ctx.save(); ctx.translate(cx+11, base+58);
     ctx.translate(0, legRY>0?0:legRY*0.3);
     rr(-8,0,16,26,8,GOLD2); rr(-6,24,12,22,6,'#a07830');
-    ctx.fillStyle='#0a1428'; ctx.beginPath(); ctx.ellipse(1,48,13,6,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#0a1428'; ctx.beginPath(); ctx.ellipse(1,49,13,6,0,0,Math.PI*2); ctx.fill();
     ctx.restore();
 
     // bras gauche
@@ -675,25 +681,20 @@ window.addEventListener('scroll', () => {
 
     // tête
     ctx.save(); ctx.translate(cx, base-17);
-    // oreilles
     ctx.fillStyle=SKIN;
     ctx.beginPath(); ctx.ellipse(-35,-26,7,10,0,0,Math.PI*2); ctx.fill();
     ctx.beginPath(); ctx.ellipse(35,-26,7,10,0,0,Math.PI*2); ctx.fill();
-    // tête
     ctx.fillStyle=SKIN;
     ctx.beginPath(); ctx.ellipse(0,-28,34,36,0,0,Math.PI*2); ctx.fill();
-    // cheveux
     ctx.fillStyle=DARK;
     ctx.beginPath(); ctx.ellipse(0,-58,30,13,0,0,Math.PI*2); ctx.fill();
     ctx.beginPath(); ctx.ellipse(-26,-50,10,18,0,0,Math.PI*2); ctx.fill();
     ctx.beginPath(); ctx.ellipse(26,-50,10,18,0,0,Math.PI*2); ctx.fill();
     ctx.beginPath(); ctx.ellipse(-13,-62,9,12,0,0,Math.PI*2); ctx.fill();
     ctx.beginPath(); ctx.ellipse(13,-63,9,12,0,0,Math.PI*2); ctx.fill();
-    // sourcils
     ctx.strokeStyle=DARK; ctx.lineWidth=3; ctx.lineCap='round';
     ctx.beginPath(); ctx.moveTo(-24,-42); ctx.quadraticCurveTo(-16,-47,-8,-42); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(8,-42); ctx.quadraticCurveTo(16,-47,24,-42); ctx.stroke();
-    // clignement
     const blinkT=(t*0.6)%4;
     const bs=(blinkT>3.7)?Math.max(0.05,1-(blinkT-3.7)*20):1;
     ctx.save(); ctx.scale(1,bs);
@@ -707,75 +708,40 @@ window.addEventListener('scroll', () => {
     ctx.beginPath(); ctx.arc(-14,-27,1.8,0,Math.PI*2); ctx.fill();
     ctx.beginPath(); ctx.arc(20,-27,1.8,0,Math.PI*2); ctx.fill();
     ctx.restore();
-    // nez
     ctx.fillStyle='rgba(0,0,0,0.08)';
     ctx.beginPath(); ctx.ellipse(0,-16,4,3,0,0,Math.PI*2); ctx.fill();
-    // sourire
     ctx.strokeStyle=DARK; ctx.lineWidth=3.5; ctx.lineCap='round';
     ctx.beginPath(); ctx.moveTo(-14,-7); ctx.quadraticCurveTo(0,8,14,-7); ctx.stroke();
-    // joues
     ctx.fillStyle='rgba(220,90,70,0.18)';
     ctx.beginPath(); ctx.ellipse(-26,-17,11,6,0,0,Math.PI*2); ctx.fill();
     ctx.beginPath(); ctx.ellipse(26,-17,11,6,0,0,Math.PI*2); ctx.fill();
     ctx.restore();
   }
 
-  function update() {
-    // Faire avancer le sol (les dalles viennent du fond vers l'avant)
-    scrollZ += 0.008;
-
-    tiles.forEach(tile => {
-      // z effectif = position dans le cycle
-      let z = ((tile.row / (NUM_ROWS-1) + scrollZ) % 1);
-      tile._z = z;
-
-      // Quand une dalle passe "sous les pieds" (z proche de 1, rangée centrale)
-      // et qu'elle est derrière le perso (z > 0.88), elle commence à tomber
-      const isCentral = tile.col >= 1 && tile.col <= 3;
-      if (!tile.falling && !tile.crumble && z > 0.88 && isCentral) {
-        tile.crumble = true;
-        setTimeout(()=>{
-          tile.falling = true;
-          tile.fallVY = 1.5 + Math.random() * 2;
-          tile.fallAlpha = 1;
-        }, 150 + Math.random()*100);
-      }
-
-      // Recycler quand invisible
-      if (tile.falling) {
-        tile.fallY  += tile.fallVY;
-        tile.fallVY += 0.4;
-        tile.fallAlpha -= 0.03;
-        if (tile.fallAlpha <= 0) {
-          tile.falling  = false;
-          tile.crumble  = false;
-          tile.fallY    = 0;
-          tile.fallVY   = 0;
-          tile.fallAlpha= 1;
-        }
-      }
-      if (z < 0.05) tile.crumble = false;
-    });
-
-    t += 0.016;
-  }
-
   function draw() {
     ctx.clearRect(0, 0, W, H);
 
-    // Trier les dalles par profondeur (lointain d'abord)
-    const sorted = [...tiles].sort((a,b) => a._z - b._z);
+    // Avancement des escaliers
+    scroll += 0.008;
 
-    sorted.forEach(tile => {
-      if (tile._z < 0.05) return; // invisible au fond
-      drawTile(tile.col, tile._z, tile.falling, tile.fallY, tile.fallAlpha, tile.crumble);
-    });
+    // Dessiner les marches du plus loin au plus proche
+    for (let i = 0; i < N_STEPS; i++) {
+      // z de chaque marche : défile de 0 (fond) vers 1 (avant)
+      const dz   = 1 / N_STEPS;
+      let   z    = ((i / N_STEPS + scroll) % 1);
+      const zEnd = Math.min(z + dz, 1);
+      // fade-in au lointain, fade-out à l'avant
+      let alpha = 1;
+      if (z < 0.06) alpha = z / 0.06;
+      if (z > 0.88) alpha = Math.max(0, 1 - (z - 0.88) / 0.12);
+      drawStep(z, dz, alpha);
+    }
 
-    // Perso par-dessus les dalles
+    // Perso par-dessus
     const walkCycle = (t * SPEED) % 1;
     drawCharacter(CHAR_X, CHAR_Y - 118, walkCycle);
 
-    update();
+    t += 0.016;
     requestAnimationFrame(draw);
   }
 
