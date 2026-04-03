@@ -16,6 +16,11 @@
 html{scroll-behavior:smooth}
 body{background:var(--off);color:var(--navy);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden}
 
+/* Times New Roman pour les textes informatifs */
+.about-text,.exp-desc,.mission-desc,.comp-desc,.obj-desc,.reflex-text,.alt-context,.contact-sub,.hero-intro-text,.comp-full-text{
+  font-family:'Times New Roman',Times,serif;
+}
+
 /* ANIMATIONS */
 @keyframes fadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -129,6 +134,10 @@ nav{
 .hero-right{
   display:flex;flex-direction:column;justify-content:flex-end;
   padding:4rem 2.5rem 0;animation:slideLeft 0.9s 0.5s cubic-bezier(.22,1,.36,1) both;
+}
+.hero-character{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  min-height:320px;
 }
 .hero-intro-label{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem}
 .hero-intro-text{font-family:'Playfair Display',serif;font-size:1.1rem;line-height:1.8;color:rgba(255,255,255,0.75);margin-bottom:3rem}
@@ -318,6 +327,156 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
     </div>
   </div>
   <div class="hero-right">
+    <div class="hero-character" aria-hidden="true">
+      <svg id="character-svg" viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg" style="width:400px;height:480px;display:block;margin:0 auto;">
+        <defs>
+          <radialGradient id="planetGrad" cx="38%" cy="32%" r="65%">
+            <stop offset="0%" stop-color="#2A4A90"/>
+            <stop offset="60%" stop-color="#162450"/>
+            <stop offset="100%" stop-color="#060E1F"/>
+          </radialGradient>
+          <radialGradient id="planetShine" cx="32%" cy="28%" r="55%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.18)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+          </radialGradient>
+          <clipPath id="pClip"><circle cx="160" cy="330" r="72"/></clipPath>
+        </defs>
+        <style>
+          @keyframes pSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+          @keyframes sTw{0%,100%{opacity:0.15}50%{opacity:1}}
+          @keyframes rSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+          @keyframes eB{0%,88%,100%{transform:scaleY(1)}94%{transform:scaleY(0.08)}}
+          @keyframes bodyBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+          @keyframes legFwd{0%,100%{transform:rotate(-28deg)}50%{transform:rotate(28deg)}}
+          @keyframes legBwd{0%,100%{transform:rotate(28deg)}50%{transform:rotate(-28deg)}}
+          @keyframes armFwd{0%,100%{transform:rotate(22deg)}50%{transform:rotate(-22deg)}}
+          @keyframes armBwd{0%,100%{transform:rotate(-22deg)}50%{transform:rotate(22deg)}}
+          @keyframes hairB{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+
+          #pspin{animation:pSpin 22s linear infinite;transform-origin:160px 330px}
+          #rSpin{animation:rSpin 10s linear infinite;transform-origin:160px 330px}
+          .s1{animation:sTw 2.1s ease-in-out infinite}
+          .s2{animation:sTw 2.1s ease-in-out infinite 0.7s}
+          .s3{animation:sTw 2.1s ease-in-out infinite 1.4s}
+          .s4{animation:sTw 3.2s ease-in-out infinite 0.3s}
+          #el2{animation:eB 4.5s ease-in-out infinite;transform-origin:136px 152px}
+          #er2{animation:eB 4.5s ease-in-out infinite 0.2s;transform-origin:168px 152px}
+          #hg{animation:hairB 0.5s ease-in-out infinite}
+          #bodyG{animation:bodyBob 0.5s ease-in-out infinite}
+
+          /* Jambe gauche avance quand jambe droite recule */
+          #legL{animation:legFwd 0.5s ease-in-out infinite;transform-origin:148px 262px}
+          #legR{animation:legBwd 0.5s ease-in-out infinite;transform-origin:164px 262px}
+          /* Bras opposés aux jambes */
+          #armL{animation:armBwd 0.5s ease-in-out infinite;transform-origin:126px 210px}
+          #armR{animation:armFwd 0.5s ease-in-out infinite;transform-origin:178px 210px}
+        </style>
+
+        <!-- Stars -->
+        <circle class="s1" cx="18" cy="35" r="2" fill="#C9A84C"/>
+        <circle class="s2" cx="298" cy="55" r="1.5" fill="white"/>
+        <circle class="s3" cx="12" cy="180" r="1.5" fill="white"/>
+        <circle class="s4" cx="305" cy="200" r="2" fill="#C9A84C"/>
+        <circle class="s1" cx="265" cy="18" r="1.5" fill="white"/>
+        <circle class="s2" cx="48" cy="90" r="1.5" fill="#C9A84C"/>
+        <circle class="s3" cx="285" cy="130" r="2" fill="white"/>
+        <circle class="s4" cx="28" cy="280" r="1.5" fill="white"/>
+        <circle class="s1" cx="290" cy="310" r="1.5" fill="#C9A84C"/>
+        <circle class="s2" cx="40" cy="360" r="1" fill="white"/>
+
+        <!-- Planet -->
+        <circle cx="160" cy="330" r="72" fill="url(#planetGrad)"/>
+        <g id="pspin" clip-path="url(#pClip)">
+          <ellipse cx="135" cy="316" rx="28" ry="15" fill="#1D9E75" opacity="0.7"/>
+          <ellipse cx="192" cy="336" rx="22" ry="12" fill="#1D9E75" opacity="0.6"/>
+          <ellipse cx="155" cy="350" rx="18" ry="9" fill="#1D9E75" opacity="0.5"/>
+          <ellipse cx="105" cy="342" rx="12" ry="7" fill="#1D9E75" opacity="0.4"/>
+          <ellipse cx="210" cy="318" rx="10" ry="6" fill="#1D9E75" opacity="0.5"/>
+          <line x1="88" y1="330" x2="232" y2="330" stroke="rgba(201,168,76,0.2)" stroke-width="1"/>
+          <line x1="94" y1="313" x2="226" y2="313" stroke="rgba(201,168,76,0.12)" stroke-width="0.7"/>
+          <line x1="94" y1="347" x2="226" y2="347" stroke="rgba(201,168,76,0.12)" stroke-width="0.7"/>
+          <line x1="160" y1="258" x2="160" y2="402" stroke="rgba(201,168,76,0.12)" stroke-width="0.7"/>
+          <line x1="120" y1="260" x2="120" y2="400" stroke="rgba(201,168,76,0.08)" stroke-width="0.6"/>
+          <line x1="200" y1="260" x2="200" y2="400" stroke="rgba(201,168,76,0.08)" stroke-width="0.6"/>
+        </g>
+        <circle cx="160" cy="330" r="72" fill="url(#planetShine)"/>
+
+        <!-- Ring behind character -->
+        <g id="rSpin">
+          <ellipse cx="160" cy="330" rx="100" ry="16" fill="none" stroke="#C9A84C" stroke-width="3" opacity="0.4"/>
+          <ellipse cx="160" cy="330" rx="92" ry="12" fill="none" stroke="#C9A84C" stroke-width="1" opacity="0.2"/>
+        </g>
+
+        <!-- ═══ CHARACTER WALKING ═══ -->
+        <!-- Jambe gauche (devant) -->
+        <g id="legL">
+          <rect x="139" y="262" width="18" height="38" rx="9" fill="#C9A84C"/>
+          <rect x="134" y="292" width="26" height="12" rx="6" fill="#0D1B3E"/>
+        </g>
+        <!-- Jambe droite (derrière) -->
+        <g id="legR">
+          <rect x="155" y="262" width="18" height="38" rx="9" fill="#B8943A"/>
+          <rect x="150" y="292" width="26" height="12" rx="6" fill="#0A1630"/>
+        </g>
+
+        <!-- Corps + tête -->
+        <g id="bodyG">
+          <!-- Bras gauche -->
+          <g id="armL">
+            <rect x="102" y="202" width="30" height="16" rx="8" fill="#B8943A"/>
+            <circle cx="99" cy="205" r="11" fill="#B8943A"/>
+          </g>
+
+          <!-- Corps -->
+          <rect x="122" y="196" width="58" height="66" rx="18" fill="#1E3060"/>
+          <rect x="142" y="196" width="20" height="13" rx="5" fill="#C9A84C" opacity="0.4"/>
+          <path d="M152 209 L147 224 L152 220 L157 224 Z" fill="#C9A84C" opacity="0.75"/>
+
+          <!-- Bras droit -->
+          <g id="armR">
+            <rect x="180" y="202" width="30" height="16" rx="8" fill="#C9A84C"/>
+            <circle cx="213" cy="205" r="11" fill="#C9A84C"/>
+          </g>
+
+          <!-- Cou -->
+          <rect x="143" y="181" width="18" height="18" rx="6" fill="#C9A84C"/>
+
+          <!-- Tête -->
+          <ellipse cx="152" cy="150" rx="36" ry="38" fill="#C9A84C"/>
+
+          <!-- Cheveux -->
+          <g id="hg">
+            <ellipse cx="152" cy="114" rx="32" ry="14" fill="#1A1200"/>
+            <ellipse cx="120" cy="126" rx="11" ry="20" fill="#1A1200"/>
+            <ellipse cx="184" cy="126" rx="11" ry="20" fill="#1A1200"/>
+            <ellipse cx="136" cy="111" rx="10" ry="13" fill="#1A1200"/>
+            <ellipse cx="168" cy="110" rx="10" ry="13" fill="#1A1200"/>
+          </g>
+
+          <!-- Oreilles -->
+          <ellipse cx="116" cy="150" rx="7" ry="10" fill="#C9A84C"/>
+          <ellipse cx="188" cy="150" rx="7" ry="10" fill="#C9A84C"/>
+
+          <!-- Yeux -->
+          <g id="el2"><ellipse cx="136" cy="148" rx="8" ry="9" fill="white"/><circle cx="138" cy="149" r="4.5" fill="#1A1200"/><circle cx="139.5" cy="147" r="1.5" fill="white"/></g>
+          <g id="er2"><ellipse cx="168" cy="148" rx="8" ry="9" fill="white"/><circle cx="170" cy="149" r="4.5" fill="#1A1200"/><circle cx="171.5" cy="147" r="1.5" fill="white"/></g>
+
+          <!-- Sourcils -->
+          <path d="M128 135 Q136 130 144 135" stroke="#1A1200" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M160 135 Q168 130 176 135" stroke="#1A1200" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+          <!-- Nez -->
+          <ellipse cx="152" cy="157" rx="4" ry="3" fill="rgba(0,0,0,0.1)"/>
+
+          <!-- Sourire -->
+          <path d="M137 168 Q152 183 167 168" stroke="#1A1200" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+
+          <!-- Joues -->
+          <ellipse cx="120" cy="161" rx="10" ry="6" fill="rgba(220,90,70,0.2)"/>
+          <ellipse cx="184" cy="161" rx="10" ry="6" fill="rgba(220,90,70,0.2)"/>
+        </g>
+      </svg>
+    </div>
     <p class="hero-intro-label">En quelques mots</p>
     <p class="hero-intro-text">Passionné par la gestion et l'organisation, je développe mes compétences au sein de Véolia Grand Est tout en poursuivant mon BUT GEA à l'IUT Nancy-Charlemagne.</p>
     <div class="hero-stats">
@@ -372,8 +531,8 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
     <div class="sec-head reveal"><span class="sec-num">02</span><h2 class="sec-title">Autres <em>Expériences</em></h2></div>
     <div class="exp-list">
       <div class="exp-item reveal d1"><div><div class="exp-date">Mai — Juin 2025</div><div class="exp-badge-type">Stage</div></div><div><div class="exp-org">Université de Lorraine</div><div class="exp-role">DADRH — Création d'une base de données RH</div><div class="exp-desc">Création d'une base Excel pour 3 200 agents BIATSS. Analyse de données sensibles, RGPD, collaboration sur la masse salariale.</div></div></div>
-      <div class="exp-item reveal d2"><div><div class="exp-date">Jan — Juil 2024</div><div class="exp-badge-type">Service Civique</div></div><div><div class="exp-org">DSDEN 54</div><div class="exp-role">École George de la Tour — Appui pédagogique</div><div class="exp-desc">Soutien à l'équipe pédagogique au sein de la DSDEN de Meurthe-et-Moselle.</div></div></div>
-      <div class="exp-item reveal d3"><div><div class="exp-date">Juin — Août 2024</div><div class="exp-badge-type">Job étudiant</div></div><div><div class="exp-org">Burger King</div><div class="exp-role">Équipier polyvalent — FRADRIVE</div><div class="exp-desc">Plonge, service à table, drive. Esprit d'équipe et adaptabilité en environnement exigeant.</div></div></div>
+      <div class="exp-item reveal d2"><div><div class="exp-date">Juin — Août 2024</div><div class="exp-badge-type">Job étudiant</div></div><div><div class="exp-org">Burger King</div><div class="exp-role">Équipier polyvalent — FRADRIVE</div><div class="exp-desc">Plonge, service à table, drive. Esprit d'équipe et adaptabilité en environnement exigeant.</div></div></div>
+      <div class="exp-item reveal d3"><div><div class="exp-date">Jan — Juil 2024</div><div class="exp-badge-type">Service Civique</div></div><div><div class="exp-org">DSDEN</div><div class="exp-role">École George de la Tour — Appui pédagogique</div><div class="exp-desc">Soutien à l'équipe pédagogique au sein de la DSDEN de Meurthe-et-Moselle.</div></div></div>
       <div class="exp-item reveal d4"><div><div class="exp-date">Oct — Déc 2023</div><div class="exp-badge-type">Contrat étudiant</div></div><div><div class="exp-org">Univ. Haute Alsace</div><div class="exp-role">Learning Center — Soutien informatique</div><div class="exp-desc">Aide à l'utilisation des nouvelles technologies et appui au personnel des bibliothèques.</div></div></div>
     </div>
   </div>
@@ -383,12 +542,12 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
   <div class="sec-inner">
     <div class="sec-head reveal"><span class="sec-num">03</span><h2 class="sec-title"><em>Compétences</em></h2></div>
     <div class="comp-grid">
-      <div class="comp-card reveal d1"><div class="comp-icon-wrap">📊</div><div class="comp-name">Analyse de données</div><div class="comp-desc">Traitement de données financières, Excel, indicateurs de performance, Looker Studio.</div></div>
-      <div class="comp-card reveal d2"><div class="comp-icon-wrap">⚙️</div><div class="comp-name">Automatisation</div><div class="comp-desc">Scripts Google Apps Script, automatisation des reportings et partages de fichiers.</div></div>
-      <div class="comp-card reveal d3"><div class="comp-icon-wrap">📋</div><div class="comp-name">Gestion administrative</div><div class="comp-desc">Rédaction de procédures, comptes rendus, gestion documentaire et organisation de service.</div></div>
-      <div class="comp-card reveal d4"><div class="comp-icon-wrap">👥</div><div class="comp-name">Ressources Humaines</div><div class="comp-desc">Données RH sensibles, application du RGPD, collaboration avec la masse salariale.</div></div>
-      <div class="comp-card reveal d5"><div class="comp-icon-wrap">🤝</div><div class="comp-name">Travail en équipe</div><div class="comp-desc">Coordination inter-services, organisation d'événements, communication interne.</div></div>
-      <div class="comp-card reveal d6"><div class="comp-icon-wrap">📝</div><div class="comp-name">Analyse organisationnelle</div><div class="comp-desc">Monographies, compréhension des structures d'administrations publiques et privées.</div></div>
+      <div class="comp-card reveal d1"><div class="comp-icon-wrap"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="10" width="3" height="7" fill="#C9A84C"/><rect x="6" y="6" width="3" height="11" fill="#C9A84C" opacity=".7"/><rect x="11" y="2" width="3" height="15" fill="#C9A84C" opacity=".4"/><rect x="16" y="8" width="1" height="9" fill="#C9A84C" opacity=".3"/></svg></div><div class="comp-name">Analyse de données</div><div class="comp-desc">Traitement de données financières, Excel, indicateurs de performance, Looker Studio.</div></div>
+      <div class="comp-card reveal d2"><div class="comp-icon-wrap"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="9" r="3" stroke="#C9A84C" stroke-width="1.5"/><path d="M9 1v2M9 15v2M1 9h2M15 9h2M3.22 3.22l1.41 1.41M13.37 13.37l1.41 1.41M3.22 14.78l1.41-1.41M13.37 4.63l1.41-1.41" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="comp-name">Automatisation</div><div class="comp-desc">Scripts Google Apps Script, automatisation des reportings et partages de fichiers.</div></div>
+      <div class="comp-card reveal d3"><div class="comp-icon-wrap"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="1" width="12" height="16" rx="1" stroke="#C9A84C" stroke-width="1.5"/><line x1="6" y1="6" x2="12" y2="6" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/><line x1="6" y1="9" x2="12" y2="9" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/><line x1="6" y1="12" x2="10" y2="12" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="comp-name">Gestion administrative</div><div class="comp-desc">Rédaction de procédures, comptes rendus, gestion documentaire et organisation de service.</div></div>
+      <div class="comp-card reveal d4"><div class="comp-icon-wrap"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="5" r="3" stroke="#C9A84C" stroke-width="1.5"/><path d="M3 16c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="comp-name">Ressources Humaines</div><div class="comp-desc">Données RH sensibles, application du RGPD, collaboration avec la masse salariale.</div></div>
+      <div class="comp-card reveal d5"><div class="comp-icon-wrap"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="2.5" stroke="#C9A84C" stroke-width="1.5"/><circle cx="13" cy="5" r="2.5" stroke="#C9A84C" stroke-width="1.5"/><path d="M1 15c0-2.21 1.79-4 4-4s4 1.79 4 4" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/><path d="M9 15c0-2.21 1.79-4 4-4s4 1.79 4 4" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="comp-name">Travail en équipe</div><div class="comp-desc">Coordination inter-services, organisation d'événements, communication interne.</div></div>
+      <div class="comp-card reveal d6"><div class="comp-icon-wrap"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 14.5l1.5-4L13 2l3 3-8.5 8.5L3 14.5z" stroke="#C9A84C" stroke-width="1.5" stroke-linejoin="round"/><line x1="10.5" y1="4.5" x2="13.5" y2="7.5" stroke="#C9A84C" stroke-width="1.5"/></svg></div><div class="comp-name">Analyse organisationnelle</div><div class="comp-desc">Monographies, compréhension des structures d'administrations publiques et privées.</div></div>
       <div class="comp-full reveal"><div class="comp-full-num">SAÉ</div><p class="comp-full-text">Formé par l'IUT Nancy-Charlemagne via des Situations d'Apprentissage et d'Évaluation — monographie, coordination d'événement, stage en entreprise et alternance professionnelle.</p></div>
     </div>
   </div>
@@ -420,15 +579,15 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
     <div class="contact-left reveal-left">
       <div class="contact-big">ÉCRIVEZ-<br>MOI <em>.</em></div>
       <p class="contact-sub">Étudiant en BUT GEA 2e année en alternance chez Véolia. Disponible pour tout échange professionnel ou académique.</p>
-      <a href="mailto:nicolas.ginko@gmail.com" class="btn btn-gold" style="margin-top:1rem">Envoyer un email</a>
+      <a href="/cdn-cgi/l/email-protection#76181f15191a170558111f181d1936111b171f1a5815191b" class="btn btn-gold" style="margin-top:1rem">Envoyer un email</a>
     </div>
     <div class="contact-right reveal-right">
       <div class="crow"><span class="clabel">Téléphone</span><span class="cval">06 24 03 36 22</span></div>
-      <div class="crow"><span class="clabel">Email</span><span class="cval accent">nicolas.ginko@gmail.com</span></div>
+      <div class="crow"><span class="clabel">Email</span><span class="cval accent"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fc92959f93909d8fd29b95929793bc9b919d9590d29f9391">[email&#160;protected]</a></span></div>
       <div class="crow"><span class="clabel">Localisation</span><span class="cval">Nancy, France</span></div>
       <div class="crow"><span class="clabel">Formation</span><span class="cval">BUT GEA · IUT Nancy-Charlemagne</span></div>
       <div class="crow"><span class="clabel">Alternance</span><span class="cval">Véolia R&V Grand Est</span></div>
-      <div class="crow"><span class="clabel">LinkedIn</span><span class="cval accent">Profil disponible ↗</span></div>
+      <div class="crow"><span class="clabel">LinkedIn</span><span class="cval accent"><a href="https://www.linkedin.com/in/nicolas-v-9a98a22a9/" target="_blank" style="color:var(--gold);text-decoration:none">nicolas-v ↗</a></span></div>
       <div class="crow"><span class="clabel">Statut</span><span class="cavail">● En alternance · Véolia</span></div>
     </div>
   </div>
@@ -440,7 +599,7 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
   <div class="footer-text">Portfolio Professionnel</div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const prog = document.getElementById('progress');
 window.addEventListener('scroll', () => {
   const st = window.scrollY;
@@ -478,11 +637,4 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => ob
 
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-links a');
-window.addEventListener('scroll', () => {
-  let current = '';
-  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id'); });
-  navLinks.forEach(a => { a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : ''; });
-});
-</script>
-</body>
-</html>
+window.addEventListener(
