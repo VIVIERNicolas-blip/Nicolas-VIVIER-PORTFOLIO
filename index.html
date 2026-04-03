@@ -8,19 +8,17 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:#1A2E5A;--navy2:#243870;--navy3:#2E4480;
+  --navy:#0D1B3E;--navy2:#162450;--navy3:#1E3060;
   --gold:#C9A84C;--gold2:#E8C96A;
-  --white:#FFFFFF;--off:#F7F5F0;--muted:#7A8499;
-  --border:rgba(201,168,76,0.3);
+  --white:#FFFFFF;--off:#F4F6FA;--muted:#8A94A8;
+  --border:rgba(201,168,76,0.25);
 }
 html{scroll-behavior:smooth}
 body{background:var(--off);color:var(--navy);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden}
 
-/* Times New Roman pour les textes informatifs + justification */
+/* Times New Roman pour les textes informatifs */
 .about-text,.exp-desc,.mission-desc,.comp-desc,.obj-desc,.reflex-text,.alt-context,.contact-sub,.hero-intro-text,.comp-full-text{
   font-family:'Times New Roman',Times,serif;
-  text-align:justify;
-  hyphens:auto;
 }
 
 /* ANIMATIONS */
@@ -89,7 +87,7 @@ nav{
 .hero-left::before{
   content:'';position:absolute;top:-50%;left:-30%;
   width:80%;height:200%;
-  background:radial-gradient(ellipse,rgba(201,168,76,0.08) 0%,transparent 65%);
+  background:radial-gradient(ellipse,rgba(201,168,76,0.07) 0%,transparent 65%);
   pointer-events:none;animation:float 8s ease-in-out infinite;
 }
 .hero-eyebrow{
@@ -173,8 +171,8 @@ nav{
 .sec-title em{color:var(--gold);font-style:normal}
 
 /* ABOUT */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start}
-.about-text{font-size:0.95rem;line-height:1.95;color:#2E3F66}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center;min-height:340px}
+.about-text{font-size:0.95rem;line-height:1.95;color:#3A4560}
 .about-text strong{color:var(--navy);font-weight:500}
 .about-cards{display:flex;flex-direction:column;gap:1rem}
 .acard{padding:1.5rem;border-left:3px solid var(--gold);background:var(--white);transition:transform .3s ease,box-shadow .3s ease;cursor:default}
@@ -190,7 +188,7 @@ nav{
 .alt-label::before{content:'';width:20px;height:1px;background:var(--gold)}
 .alt-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3rem);color:var(--white);line-height:1;margin-bottom:0.5rem}
 .alt-company{font-family:'Playfair Display',serif;font-style:italic;font-size:1.4rem;color:var(--gold);margin-bottom:1.5rem}
-.alt-context{font-size:0.88rem;line-height:1.85;color:rgba(255,255,255,0.75)}
+.alt-context{font-size:0.88rem;line-height:1.85;color:rgba(255,255,255,0.6)}
 .alt-badge{
   display:inline-flex;align-items:center;gap:0.5rem;
   background:rgba(201,168,76,0.12);border:1px solid var(--border);
@@ -249,13 +247,13 @@ nav{
 .comp-full-text{font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;line-height:1.8;color:rgba(255,255,255,0.7)}
 
 /* REFLEXION */
-.reflex-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.reflex-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;min-height:300px}
 .reflex-quote-wrap{display:flex;align-items:center;justify-content:center;height:100%}
 .reflex-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.3rem,2.5vw,1.8rem);line-height:1.6;color:var(--navy);position:relative}
 .reflex-quote em{color:var(--gold);font-style:normal}
 .reflex-quote::before{content:'"';font-size:4rem;color:var(--gold);opacity:0.25;display:block;line-height:0.8;margin-bottom:1rem;font-family:'Playfair Display',serif;transition:opacity .3s}
 .reflex-quote:hover::before{opacity:0.5}
-.reflex-text{font-size:0.9rem;line-height:1.9;color:#2E3F66}
+.reflex-text{font-size:0.9rem;line-height:1.9;color:#3A4560}
 .reflex-text strong{color:var(--navy);font-weight:500}
 
 /* OBJECTIFS */
@@ -268,7 +266,7 @@ nav{
 .obj-n{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;line-height:1;color:#D8DEE8;margin-bottom:1rem;transition:color .3s}
 .obj-card:hover .obj-n{color:rgba(201,168,76,0.3)}
 .obj-title{font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem}
-.obj-desc{font-size:0.85rem;line-height:1.8;color:#2E3F66}
+.obj-desc{font-size:0.85rem;line-height:1.8;color:#3A4560}
 .obj-icon{width:0;height:2px;background:var(--gold);margin-top:1.5rem;transition:width .5s cubic-bezier(.22,1,.36,1)}
 .obj-card:hover .obj-icon{width:40px}
 
@@ -356,23 +354,23 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
         <defs>
           <!-- Fond identique à la page -->
           <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="#0E1E3C"/>
-            <stop offset="50%"  stop-color="#1A2E5A"/>
-            <stop offset="100%" stop-color="#1A2E5A"/>
+            <stop offset="0%"   stop-color="#060C1C"/>
+            <stop offset="50%"  stop-color="#0D1B3E"/>
+            <stop offset="100%" stop-color="#0D1B3E"/>
           </linearGradient>
           <!-- Fondu gauche pour effacer la jointure -->
           <linearGradient id="fadeLeft" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"  stop-color="#1A2E5A" stop-opacity="1"/>
-            <stop offset="40%" stop-color="#1A2E5A" stop-opacity="0"/>
+            <stop offset="0%"  stop-color="#0D1B3E" stop-opacity="1"/>
+            <stop offset="40%" stop-color="#0D1B3E" stop-opacity="0"/>
           </linearGradient>
           <!-- Fondu bas -->
           <linearGradient id="fadeBottom" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="60%" stop-color="#1A2E5A" stop-opacity="0"/>
-            <stop offset="100%" stop-color="#1A2E5A" stop-opacity="1"/>
+            <stop offset="60%" stop-color="#0D1B3E" stop-opacity="0"/>
+            <stop offset="100%" stop-color="#0D1B3E" stop-opacity="1"/>
           </linearGradient>
           <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="#162648"/>
-            <stop offset="100%" stop-color="#1A2E5A"/>
+            <stop offset="0%"   stop-color="#0a1630"/>
+            <stop offset="100%" stop-color="#0D1B3E"/>
           </linearGradient>
           <clipPath id="waterClip"><rect x="0" y="210" width="400" height="70"/></clipPath>
         </defs>
@@ -669,8 +667,10 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
       <h2 class="sec-title">Me <em>Concernant</em></h2>
     </div>
     <div class="about-grid">
-      <p class="about-text reveal d1">Après l'obtention de mon baccalauréat <strong>STMG</strong>, j'ai intégré le <strong>BUT Gestion des Entreprises et Administrations</strong> à l'IUT Nancy-Charlemagne. Cette formation me permet d'acquérir des compétences solides en gestion, management et organisation.<br><br>En deuxième année, j'ai choisi l'<strong>alternance</strong> pour conjuguer théorie et pratique au sein de Véolia, développant des compétences concrètes au contact d'une grande organisation internationale.<br><br>Mon ambition : évoluer vers des fonctions de <strong>management et de chef de projet</strong>, en pilotant des équipes au sein d'une organisation structurée.</p>
-      <div class="about-cards">
+      <div style="display:flex;align-items:center;justify-content:center;height:100%;">
+        <p class="about-text reveal d1">Après l'obtention de mon baccalauréat <strong>STMG</strong>, j'ai intégré le <strong>BUT Gestion des Entreprises et Administrations</strong> à l'IUT Nancy-Charlemagne. Cette formation me permet d'acquérir des compétences solides en gestion, management et organisation.<br><br>En deuxième année, j'ai choisi l'<strong>alternance</strong> pour conjuguer théorie et pratique au sein de Véolia, développant des compétences concrètes au contact d'une grande organisation internationale.<br><br>Mon ambition : évoluer vers des fonctions de <strong>management et de chef de projet</strong>, en pilotant des équipes au sein d'une organisation structurée.</p>
+      </div>
+      <div class="about-cards" style="display:flex;flex-direction:column;justify-content:center;gap:1rem;">
         <div class="acard reveal d2"><div class="acard-label">Formation</div><div class="acard-title">BUT GEA — 2e année</div><div class="acard-sub">IUT Nancy-Charlemagne · Université de Lorraine</div></div>
         <div class="acard reveal d3"><div class="acard-label">Alternance</div><div class="acard-title">Véolia Recyclage & Valorisation</div><div class="acard-sub">Service Facturation & Recouvrement · Grand Est</div></div>
         <div class="acard reveal d4"><div class="acard-label">Parcours visé</div><div class="acard-title">GEMA — Gestion & Management</div><div class="acard-sub">Poursuite en Master · Véolia</div></div>
@@ -732,8 +732,10 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
   <div class="sec-inner">
     <div class="sec-head reveal"><span class="sec-num">04</span><h2 class="sec-title"><em>Réflexions</em></h2></div>
     <div class="reflex-grid">
-      <p class="reflex-text reveal-left">Suite aux compétences acquises lors de mon parcours, et plus particulièrement grâce à mon alternance au sein du service facturation de Véolia, j'ai confirmé mon orientation vers le <strong>parcours GEMA</strong>.<br><br>Mon intérêt à <strong>contribuer à une organisation en pilotant une équipe</strong> ou en tant que chef de projet se trouve pleinement nourri par cette expérience. La gestion de données, l'amélioration des processus et la collaboration inter-services renforcent chaque jour ma conviction.</p>
-      <div class="reflex-quote-wrap reveal-right">
+      <div style="display:flex;align-items:center;justify-content:flex-start;height:100%;">
+        <p class="reflex-text reveal-left">Suite aux compétences acquises lors de mon parcours, et plus particulièrement grâce à mon alternance au sein du service facturation de Véolia, j'ai confirmé mon orientation vers le <strong>parcours GEMA</strong>.<br><br>Mon intérêt à <strong>contribuer à une organisation en pilotant une équipe</strong> ou en tant que chef de projet se trouve pleinement nourri par cette expérience. La gestion de données, l'amélioration des processus et la collaboration inter-services renforcent chaque jour ma conviction.</p>
+      </div>
+      <div class="reflex-quote-wrap reveal-right" style="display:flex;align-items:center;justify-content:center;height:100%;">
         <p class="reflex-quote">Mon alternance chez <em>Véolia</em> confirme que le management et la gestion de projet sont ma voie.</p>
       </div>
     </div>
