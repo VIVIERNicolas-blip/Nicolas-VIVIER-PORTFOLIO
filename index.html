@@ -504,276 +504,277 @@ window.addEventListener('scroll', () => {
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
 
-  const GOLD   = '#C9A84C';
-  const GOLD2  = '#B8943A';
-  const NAVY   = '#0D1B3E';
-  const NAVY2  = '#1E3060';
-  const SKIN   = '#C9A84C';
-  const DARK   = '#1A1200';
-  const WHITE  = '#FFFFFF';
-  const GROUND_Y = H - 50;
-  const SPEED  = 0.6; // lent
+  const GOLD  = '#C9A84C';
+  const GOLD2 = '#B8943A';
+  const NAVY2 = '#1E3060';
+  const SKIN  = '#C9A84C';
+  const DARK  = '#1A1200';
+  const WHITE = '#FFFFFF';
+  const SPEED = 0.5;
 
-  // Sol : segments qui tombent derrière le perso
-  const SEG_W = 18;
-  const NUM_SEGS = Math.ceil(W / SEG_W) + 2;
-  let segments = [];
-  for (let i = 0; i < NUM_SEGS; i++) {
-    segments.push({ x: i * SEG_W, y: GROUND_Y, vy: 0, falling: false, alpha: 1 });
+  // Point de fuite — horizon au centre haut
+  const VPX = W * 0.5;
+  const VPY = H * 0.38;
+
+  // Le perso est fixe au centre bas
+  const CHAR_X = W * 0.5;
+  const CHAR_Y = H - 30;
+
+  // Dalles en perspective : rangées qui arrivent du fond vers l'avant
+  // Chaque rangée a une profondeur z (0=loin, 1=proche)
+  const NUM_ROWS = 10;
+  const TILE_COLS = 5; // colonnes de dalles (gauche à droite)
+  let tiles = [];
+  let scrollZ = 0; // défilement vers l'avant
+
+  function initTiles() {
+    tiles = [];
+    for (let row = 0; row < NUM_ROWS; row++) {
+      for (let col = 0; col < TILE_COLS; col++) {
+        tiles.push({
+          row, col,
+          z: row / (NUM_ROWS - 1), // 0=fond, 1=devant
+          falling: false,
+          fallY: 0, fallVY: 0, fallAlpha: 1,
+          crumble: false
+        });
+      }
+    }
+  }
+  initTiles();
+
+  // Projeter un point 3D (x relatif au centre, z=0..1) vers 2D canvas
+  function project(xRel, zDepth) {
+    // zDepth : 0=lointain (haut), 1=proche (bas)
+    const scale = 0.15 + zDepth * 0.85;
+    const py = VPY + (CHAR_Y - VPY) * zDepth;
+    const px = VPX + xRel * scale * (W * 0.55);
+    return { px, py, scale };
   }
 
-  let t = 0; // temps global
-  let charX = W * 0.42; // position X fixe du perso (centré légèrement à gauche)
+  // Dessiner une dalle en perspective
+  function drawTile(col, zDepth, falling, fallY, fallAlpha, crumble) {
+    const COLS = TILE_COLS;
+    const xRel = (col / (COLS - 1) - 0.5) * 2; // -1 à +1
+    const xRelNext = ((col + 1) / (COLS - 1) - 0.5) * 2;
 
-  function getSegUnderFoot(fx) {
-    // segment sous le pied droit (le perso marche dessus)
-    return segments.find(s => fx >= s.x && fx < s.x + SEG_W);
-  }
+    const p0 = project(xRel,     zDepth);
+    const p1 = project(xRelNext, zDepth);
 
-  function drawRoundRect(x, y, w, h, r, color) {
-    ctx.fillStyle = color;
+    // Profondeur de la rangée suivante (un peu plus proche)
+    const dz = 1 / (NUM_ROWS - 1);
+    const zFront = Math.min(zDepth + dz * 0.5, 1);
+    const p2 = project(xRelNext, zFront);
+    const p3 = project(xRel,     zFront);
+
+    if (falling) {
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, fallAlpha);
+      ctx.translate(0, fallY);
+    } else {
+      ctx.save();
+      ctx.globalAlpha = 1;
+    }
+
+    // Dessus de la dalle
+    const brightness = 0.5 + zDepth * 0.5;
+    ctx.fillStyle = crumble
+      ? `rgba(180,130,40,${0.6 * brightness})`
+      : `rgba(201,168,76,${brightness})`;
     ctx.beginPath();
-    ctx.roundRect(x, y, w, h, r);
+    ctx.moveTo(p0.px, p0.py);
+    ctx.lineTo(p1.px, p1.py);
+    ctx.lineTo(p2.px, p2.py);
+    ctx.lineTo(p3.px, p3.py);
+    ctx.closePath();
     ctx.fill();
+
+    // Grille (bordure)
+    ctx.strokeStyle = `rgba(13,27,62,${0.4 * brightness})`;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Côté avant (épaisseur 3D)
+    if (!falling) {
+      const thick = 4 * zDepth;
+      ctx.fillStyle = `rgba(150,110,30,${brightness})`;
+      ctx.beginPath();
+      ctx.moveTo(p3.px, p3.py);
+      ctx.lineTo(p2.px, p2.py);
+      ctx.lineTo(p2.px, p2.py + thick);
+      ctx.lineTo(p3.px, p3.py + thick);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    ctx.restore();
   }
+
+  let t = 0;
 
   function drawCharacter(cx, cy, walkT) {
-    // walkT : 0..1 cycle de marche
-    const cycle  = Math.PI * 2 * walkT;
-    const bobY   = Math.abs(Math.sin(cycle)) * -6; // corps monte légèrement
+    const cycle = Math.PI * 2 * walkT;
+    const bobY  = Math.abs(Math.sin(cycle)) * -5;
+    const legLY = Math.sin(cycle) * 14;
+    const legRY = Math.sin(cycle + Math.PI) * 14;
+    const armLR = Math.sin(cycle + Math.PI) * 14;
+    const armRR = Math.sin(cycle) * 14;
+    const base  = cy + bobY;
 
-    // angles jambes (vue de face : translation verticale)
-    const legLY  = Math.sin(cycle) * 16;           // jambe gauche
-    const legRY  = Math.sin(cycle + Math.PI) * 16; // jambe droite (opposée)
-    const armLR  = Math.sin(cycle + Math.PI) * 14; // bras gauche (opposé jambe G)
-    const armRR  = Math.sin(cycle) * 14;            // bras droit
+    function rr(x,y,w,h,r,c){
+      ctx.fillStyle=c;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill();
+    }
 
-    const base   = cy + bobY;
-    const scale  = 1;
-
-    // Ombres portées au sol
-    ctx.save();
-    ctx.globalAlpha = 0.18;
-    ctx.fillStyle = DARK;
-    ctx.beginPath();
-    ctx.ellipse(cx, cy + 2, 28, 6, 0, 0, Math.PI * 2);
-    ctx.fill();
+    // ombre
+    ctx.save(); ctx.globalAlpha=0.15; ctx.fillStyle=DARK;
+    ctx.beginPath(); ctx.ellipse(cx,cy+2,26,5,0,0,Math.PI*2); ctx.fill();
     ctx.restore();
 
-    // ── JAMBE GAUCHE ──
-    ctx.save();
-    ctx.translate(cx - 12, base + 60);
-    ctx.translate(0, legLY > 0 ? 0 : legLY * 0.4);
-    // cuisse
-    drawRoundRect(-9, 0, 18, 28, 9, SKIN);
-    // mollet
-    drawRoundRect(-7, 26, 14, 24, 7, GOLD2);
-    // chaussure
-    ctx.fillStyle = NAVY;
-    ctx.beginPath();
-    ctx.ellipse(2, 52, 14, 7, 0, 0, Math.PI * 2);
-    ctx.fill();
+    // jambe gauche
+    ctx.save(); ctx.translate(cx-11, base+58);
+    ctx.translate(0, legLY>0?0:legLY*0.3);
+    rr(-8,0,16,26,8,SKIN); rr(-6,24,12,22,6,GOLD2);
+    ctx.fillStyle='#0D1B3E'; ctx.beginPath(); ctx.ellipse(1,48,13,6,0,0,Math.PI*2); ctx.fill();
     ctx.restore();
 
-    // ── JAMBE DROITE ──
-    ctx.save();
-    ctx.translate(cx + 12, base + 60);
-    ctx.translate(0, legRY > 0 ? 0 : legRY * 0.4);
-    drawRoundRect(-9, 0, 18, 28, 9, GOLD2);
-    drawRoundRect(-7, 26, 14, 24, 7, '#a07830');
-    ctx.fillStyle = '#0a1428';
-    ctx.beginPath();
-    ctx.ellipse(2, 52, 14, 7, 0, 0, Math.PI * 2);
-    ctx.fill();
+    // jambe droite
+    ctx.save(); ctx.translate(cx+11, base+58);
+    ctx.translate(0, legRY>0?0:legRY*0.3);
+    rr(-8,0,16,26,8,GOLD2); rr(-6,24,12,22,6,'#a07830');
+    ctx.fillStyle='#0a1428'; ctx.beginPath(); ctx.ellipse(1,48,13,6,0,0,Math.PI*2); ctx.fill();
     ctx.restore();
 
-    // ── BRAS GAUCHE ──
-    ctx.save();
-    ctx.translate(cx - 28, base + 8);
-    ctx.rotate(armLR * Math.PI / 180);
-    drawRoundRect(-10, 0, 20, 46, 10, GOLD2);
-    // main
-    ctx.fillStyle = GOLD2;
-    ctx.beginPath(); ctx.ellipse(0, 48, 11, 10, 0, 0, Math.PI * 2); ctx.fill();
+    // bras gauche
+    ctx.save(); ctx.translate(cx-26, base+6);
+    ctx.rotate(armLR*Math.PI/180);
+    rr(-9,0,18,42,9,GOLD2);
+    ctx.fillStyle=GOLD2; ctx.beginPath(); ctx.ellipse(0,44,10,9,0,0,Math.PI*2); ctx.fill();
     ctx.restore();
 
-    // ── CORPS ──
-    ctx.save();
-    ctx.translate(cx, base);
-    drawRoundRect(-30, 0, 60, 65, 18, NAVY2);
-    // col
-    drawRoundRect(-11, 0, 22, 13, 5, GOLD + '55');
-    // cravate
-    ctx.fillStyle = GOLD;
-    ctx.globalAlpha = 0.8;
-    ctx.beginPath();
-    ctx.moveTo(0, 13); ctx.lineTo(-5, 30); ctx.lineTo(0, 25); ctx.lineTo(5, 30); ctx.closePath();
-    ctx.fill();
-    ctx.globalAlpha = 1;
-    // boutons
-    ctx.fillStyle = GOLD + '66';
-    ctx.beginPath(); ctx.arc(0, 42, 2.5, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(0, 54, 2.5, 0, Math.PI*2); ctx.fill();
-    ctx.restore();
-
-    // ── BRAS DROIT ──
-    ctx.save();
-    ctx.translate(cx + 28, base + 8);
-    ctx.rotate(armRR * Math.PI / 180);
-    drawRoundRect(-10, 0, 20, 46, 10, SKIN);
-    ctx.fillStyle = SKIN;
-    ctx.beginPath(); ctx.ellipse(0, 48, 11, 10, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.restore();
-
-    // ── COU ──
-    ctx.save();
-    ctx.translate(cx, base);
-    drawRoundRect(-9, -18, 18, 20, 7, SKIN);
-    ctx.restore();
-
-    // ── TÊTE ──
-    ctx.save();
-    ctx.translate(cx, base - 18);
-
-    // Oreilles
-    ctx.fillStyle = SKIN;
-    ctx.beginPath(); ctx.ellipse(-37, -28, 8, 11, 0, 0, Math.PI*2); ctx.fill();
-    ctx.fillStyle = GOLD2; ctx.globalAlpha=0.4;
-    ctx.beginPath(); ctx.ellipse(-37, -28, 5, 7, 0, 0, Math.PI*2); ctx.fill();
+    // corps
+    ctx.save(); ctx.translate(cx, base);
+    rr(-28,0,56,62,16,NAVY2);
+    rr(-10,0,20,12,5,GOLD+'44');
+    ctx.fillStyle=GOLD; ctx.globalAlpha=0.8;
+    ctx.beginPath(); ctx.moveTo(0,12); ctx.lineTo(-5,28); ctx.lineTo(0,23); ctx.lineTo(5,28); ctx.closePath(); ctx.fill();
     ctx.globalAlpha=1;
-    ctx.fillStyle = SKIN;
-    ctx.beginPath(); ctx.ellipse(37, -28, 8, 11, 0, 0, Math.PI*2); ctx.fill();
-    ctx.fillStyle = GOLD2; ctx.globalAlpha=0.4;
-    ctx.beginPath(); ctx.ellipse(37, -28, 5, 7, 0, 0, Math.PI*2); ctx.fill();
-    ctx.globalAlpha=1;
-
-    // Tête principale
-    ctx.fillStyle = SKIN;
-    ctx.beginPath();
-    ctx.ellipse(0, -30, 36, 38, 0, 0, Math.PI*2);
-    ctx.fill();
-
-    // Cheveux
-    ctx.fillStyle = DARK;
-    ctx.beginPath(); ctx.ellipse(0, -62, 32, 14, 0, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(-28, -52, 11, 20, 0, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(28, -52, 11, 20, 0, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(-14, -65, 10, 13, 0, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(14, -66, 10, 13, 0, 0, Math.PI*2); ctx.fill();
-
-    // Sourcils
-    ctx.strokeStyle = DARK; ctx.lineWidth = 3; ctx.lineCap = 'round';
-    ctx.beginPath(); ctx.moveTo(-26,-44); ctx.quadraticCurveTo(-18,-49,-10,-44); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(10,-44);  ctx.quadraticCurveTo(18,-49,26,-44);   ctx.stroke();
-
-    // Yeux — clignement toutes les 4s
-    const blinkT = (t * 0.6) % 4;
-    const blinkScale = (blinkT > 3.7) ? Math.max(0.05, 1 - (blinkT - 3.7) * 20) : 1;
-    ctx.save();
-    ctx.scale(1, blinkScale);
-    // Oeil gauche
-    ctx.fillStyle = WHITE;
-    ctx.beginPath(); ctx.ellipse(-18,-28,9,10,0,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle = DARK;
-    ctx.beginPath(); ctx.arc(-16,-27,5.5,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle = WHITE;
-    ctx.beginPath(); ctx.arc(-15,-29,2,0,Math.PI*2); ctx.fill();
-    // Oeil droit
-    ctx.fillStyle = WHITE;
-    ctx.beginPath(); ctx.ellipse(18,-28,9,10,0,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle = DARK;
-    ctx.beginPath(); ctx.arc(20,-27,5.5,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle = WHITE;
-    ctx.beginPath(); ctx.arc(21,-29,2,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=GOLD+'55';
+    ctx.beginPath(); ctx.arc(0,38,2.5,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(0,50,2.5,0,Math.PI*2); ctx.fill();
     ctx.restore();
 
-    // Cils
-    ctx.strokeStyle = DARK; ctx.lineWidth=1.5;
-    [[-26,-37],[-18,-35],[-10,-37]].forEach(([x,y])=>{ ctx.beginPath();ctx.moveTo(x,y+2);ctx.lineTo(x-1,y-2);ctx.stroke(); });
-    [[10,-37],[18,-35],[26,-37]].forEach(([x,y])=>{ ctx.beginPath();ctx.moveTo(x,y+2);ctx.lineTo(x+1,y-2);ctx.stroke(); });
+    // bras droit
+    ctx.save(); ctx.translate(cx+26, base+6);
+    ctx.rotate(armRR*Math.PI/180);
+    rr(-9,0,18,42,9,SKIN);
+    ctx.fillStyle=SKIN; ctx.beginPath(); ctx.ellipse(0,44,10,9,0,0,Math.PI*2); ctx.fill();
+    ctx.restore();
 
-    // Nez
-    ctx.fillStyle = 'rgba(0,0,0,0.08)';
-    ctx.beginPath(); ctx.ellipse(0,-18,5,4,0,0,Math.PI*2); ctx.fill();
+    // cou
+    ctx.save(); ctx.translate(cx,base); rr(-8,-17,16,19,7,SKIN); ctx.restore();
 
-    // Sourire
-    ctx.strokeStyle = DARK; ctx.lineWidth=4; ctx.lineCap='round';
-    ctx.beginPath(); ctx.moveTo(-16,-8); ctx.quadraticCurveTo(0,8,16,-8); ctx.stroke();
-
-    // Joues
-    ctx.fillStyle = 'rgba(220,90,70,0.18)';
-    ctx.beginPath(); ctx.ellipse(-28,-18,12,7,0,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(28,-18,12,7,0,0,Math.PI*2); ctx.fill();
-
+    // tête
+    ctx.save(); ctx.translate(cx, base-17);
+    // oreilles
+    ctx.fillStyle=SKIN;
+    ctx.beginPath(); ctx.ellipse(-35,-26,7,10,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(35,-26,7,10,0,0,Math.PI*2); ctx.fill();
+    // tête
+    ctx.fillStyle=SKIN;
+    ctx.beginPath(); ctx.ellipse(0,-28,34,36,0,0,Math.PI*2); ctx.fill();
+    // cheveux
+    ctx.fillStyle=DARK;
+    ctx.beginPath(); ctx.ellipse(0,-58,30,13,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(-26,-50,10,18,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(26,-50,10,18,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(-13,-62,9,12,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(13,-63,9,12,0,0,Math.PI*2); ctx.fill();
+    // sourcils
+    ctx.strokeStyle=DARK; ctx.lineWidth=3; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(-24,-42); ctx.quadraticCurveTo(-16,-47,-8,-42); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(8,-42); ctx.quadraticCurveTo(16,-47,24,-42); ctx.stroke();
+    // clignement
+    const blinkT=(t*0.6)%4;
+    const bs=(blinkT>3.7)?Math.max(0.05,1-(blinkT-3.7)*20):1;
+    ctx.save(); ctx.scale(1,bs);
+    ctx.fillStyle=WHITE;
+    ctx.beginPath(); ctx.ellipse(-17,-26,8,9,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(17,-26,8,9,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=DARK;
+    ctx.beginPath(); ctx.arc(-15,-25,5,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(19,-25,5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=WHITE;
+    ctx.beginPath(); ctx.arc(-14,-27,1.8,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(20,-27,1.8,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+    // nez
+    ctx.fillStyle='rgba(0,0,0,0.08)';
+    ctx.beginPath(); ctx.ellipse(0,-16,4,3,0,0,Math.PI*2); ctx.fill();
+    // sourire
+    ctx.strokeStyle=DARK; ctx.lineWidth=3.5; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(-14,-7); ctx.quadraticCurveTo(0,8,14,-7); ctx.stroke();
+    // joues
+    ctx.fillStyle='rgba(220,90,70,0.18)';
+    ctx.beginPath(); ctx.ellipse(-26,-17,11,6,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(26,-17,11,6,0,0,Math.PI*2); ctx.fill();
     ctx.restore();
   }
 
-  function drawGround() {
-    segments.forEach(seg => {
-      if (seg.alpha <= 0) return;
-      ctx.save();
-      ctx.globalAlpha = seg.alpha;
-      ctx.fillStyle = GOLD;
-      ctx.fillRect(seg.x, seg.y, SEG_W - 1, 4);
-      // petits carrés de sol
-      ctx.fillStyle = GOLD2;
-      ctx.fillRect(seg.x, seg.y + 4, SEG_W - 1, 3);
-      ctx.restore();
-      // particules qui tombent
-      if (seg.falling) {
-        ctx.save();
-        ctx.globalAlpha = seg.alpha * 0.6;
-        ctx.fillStyle = GOLD;
-        ctx.fillRect(seg.x + 4, seg.y + 8, 4, 4);
-        ctx.fillRect(seg.x + 10, seg.y + 12, 3, 3);
-        ctx.restore();
-      }
-    });
-  }
-
-  let frameCount = 0;
   function update() {
-    // Faire tomber les segments derrière le perso
-    const behindX = charX - 30;
-    segments.forEach(seg => {
-      if (seg.x + SEG_W < behindX && !seg.falling && seg.alpha > 0) {
-        // déclencher la chute avec un léger délai selon distance
-        const dist = behindX - (seg.x + SEG_W);
-        if (dist > Math.random() * 20) {
-          seg.falling = true;
-          seg.vy = 1 + Math.random() * 2;
+    // Faire avancer le sol (les dalles viennent du fond vers l'avant)
+    scrollZ += 0.008;
+
+    tiles.forEach(tile => {
+      // z effectif = position dans le cycle
+      let z = ((tile.row / (NUM_ROWS-1) + scrollZ) % 1);
+      tile._z = z;
+
+      // Quand une dalle passe "sous les pieds" (z proche de 1, rangée centrale)
+      // et qu'elle est derrière le perso (z > 0.88), elle commence à tomber
+      const isCentral = tile.col >= 1 && tile.col <= 3;
+      if (!tile.falling && !tile.crumble && z > 0.88 && isCentral) {
+        tile.crumble = true;
+        setTimeout(()=>{
+          tile.falling = true;
+          tile.fallVY = 1.5 + Math.random() * 2;
+          tile.fallAlpha = 1;
+        }, 150 + Math.random()*100);
+      }
+
+      // Recycler quand invisible
+      if (tile.falling) {
+        tile.fallY  += tile.fallVY;
+        tile.fallVY += 0.4;
+        tile.fallAlpha -= 0.03;
+        if (tile.fallAlpha <= 0) {
+          tile.falling  = false;
+          tile.crumble  = false;
+          tile.fallY    = 0;
+          tile.fallVY   = 0;
+          tile.fallAlpha= 1;
         }
       }
-      if (seg.falling) {
-        seg.y += seg.vy;
-        seg.vy += 0.3;
-        seg.alpha -= 0.022;
-      }
-    });
-
-    // Recycler les segments tombés : les remettre devant
-    segments.forEach(seg => {
-      if (seg.alpha <= 0) {
-        // Trouver le segment le plus à droite
-        const maxX = Math.max(...segments.map(s => s.x));
-        seg.x = maxX + SEG_W;
-        seg.y = GROUND_Y;
-        seg.vy = 0;
-        seg.falling = false;
-        seg.alpha = 1;
-      }
+      if (z < 0.05) tile.crumble = false;
     });
 
     t += 0.016;
-    frameCount++;
   }
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    drawGround();
+
+    // Trier les dalles par profondeur (lointain d'abord)
+    const sorted = [...tiles].sort((a,b) => a._z - b._z);
+
+    sorted.forEach(tile => {
+      if (tile._z < 0.05) return; // invisible au fond
+      drawTile(tile.col, tile._z, tile.falling, tile.fallY, tile.fallAlpha, tile.crumble);
+    });
+
+    // Perso par-dessus les dalles
     const walkCycle = (t * SPEED) % 1;
-    const groundY = GROUND_Y;
-    drawCharacter(charX, groundY - 120, walkCycle);
+    drawCharacter(CHAR_X, CHAR_Y - 118, walkCycle);
+
     update();
     requestAnimationFrame(draw);
   }
