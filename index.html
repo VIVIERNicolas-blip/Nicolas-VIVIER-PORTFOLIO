@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vivier Nicolas — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D1B3E;--navy2:#162450;--navy3:#1E3060;
+  --gold:#C9A84C;--gold2:#E8C96A;
+  --white:#FFFFFF;--off:#F4F6FA;--muted:#8A94A8;
+  --border:rgba(201,168,76,0.25);
+}
+html{scroll-behavior:smooth}
+body{background:var(--off);color:var(--navy);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideRight{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideLeft{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:translateX(0)}}
+@keyframes lineGrow{from{width:0}to{width:30px}}
+@keyframes goldPulse{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0)}50%{box-shadow:0 0 18px 4px rgba(201,168,76,0.18)}}
+@keyframes heroName{from{opacity:0;letter-spacing:0.3em}to{opacity:1;letter-spacing:0.02em}}
+@keyframes dotBlink{0%,100%{opacity:1}50%{opacity:0.3}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s cubic-bezier(.22,1,.36,1),transform 0.7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity 0.7s cubic-bezier(.22,1,.36,1),transform 0.7s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(28px);transition:opacity 0.7s cubic-bezier(.22,1,.36,1),transform 0.7s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+.d4{transition-delay:.4s}.d5{transition-delay:.5s}.d6{transition-delay:.6s}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1rem 2.5rem;
+  background:rgba(13,27,62,0.97);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+  animation:fadeIn 0.8s ease both;
+}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.12em;color:var(--white)}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{
+  font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;
+  text-decoration:none;color:rgba(255,255,255,0.5);
+  transition:color .25s,transform .2s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;
+  background:var(--gold);transition:width .3s ease;
+}
+.nav-links a:hover{color:var(--gold);transform:translateY(-1px)}
+.nav-links a:hover::after{width:100%}
+
+#progress{
+  position:fixed;top:0;left:0;z-index:200;
+  height:2px;width:0%;background:var(--gold);
+  transition:width 0.1s linear;
+}
+
+/* HERO */
+.hero{
+  min-height:100vh;padding-top:3.8rem;
+  display:grid;grid-template-columns:55% 45%;
+  background:var(--navy);overflow:hidden;
+}
+.hero-left{
+  padding:4rem 3rem 3rem;
+  display:flex;flex-direction:column;justify-content:center;
+  border-right:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.hero-left::before{
+  content:'';position:absolute;top:-50%;left:-30%;
+  width:80%;height:200%;
+  background:radial-gradient(ellipse,rgba(201,168,76,0.07) 0%,transparent 65%);
+  pointer-events:none;animation:float 8s ease-in-out infinite;
+}
+.hero-eyebrow{
+  display:flex;align-items:center;gap:1rem;
+  font-size:0.68rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:2rem;
+  animation:slideRight 0.8s 0.3s cubic-bezier(.22,1,.36,1) both;
+}
+.hero-eyebrow::before{content:'';width:30px;height:1px;background:var(--gold);animation:lineGrow 0.6s 0.5s ease both}
+.hero-name{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,7rem);
+  line-height:0.9;color:var(--white);margin-bottom:0.3rem;
+  animation:heroName 1s 0.4s cubic-bezier(.22,1,.36,1) both;
+}
+.hero-name-sub{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,7rem);
+  line-height:0.9;color:var(--gold);margin-bottom:2rem;
+  animation:heroName 1s 0.6s cubic-bezier(.22,1,.36,1) both;
+}
+.hero-tagline{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:1.15rem;color:rgba(255,255,255,0.6);
+  line-height:1.7;margin-bottom:3rem;max-width:420px;
+  animation:fadeUp 0.8s 0.8s ease both;
+}
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp 0.8s 1s ease both}
+.btn{
+  padding:0.8rem 2rem;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;
+  font-family:'Inter',sans-serif;cursor:pointer;
+  transition:all .3s cubic-bezier(.22,1,.36,1);
+  text-decoration:none;display:inline-block;border:none;position:relative;overflow:hidden;
+}
+.btn::before{
+  content:'';position:absolute;inset:0;
+  background:rgba(255,255,255,0.1);
+  transform:translateX(-100%);transition:transform .3s ease;
+}
+.btn:hover::before{transform:translateX(0)}
+.btn-gold{background:var(--gold);color:var(--navy);font-weight:500}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,0.35)}
+.btn-ghost{background:transparent;color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.2)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+
+.hero-right{
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:4rem 2.5rem 0;animation:slideLeft 0.9s 0.5s cubic-bezier(.22,1,.36,1) both;
+}
+.hero-intro-label{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem}
+.hero-intro-text{font-family:'Playfair Display',serif;font-size:1.1rem;line-height:1.8;color:rgba(255,255,255,0.75);margin-bottom:3rem}
+.hero-stats{display:flex;border-top:1px solid var(--border)}
+.hstat{flex:1;padding:1.8rem 0;border-right:1px solid var(--border);cursor:default;transition:background .3s}
+.hstat:hover{background:rgba(201,168,76,0.05)}
+.hstat:last-child{border-right:none;padding-left:1.5rem}
+.hstat:not(:first-child){padding-left:1.5rem}
+.hstat-n{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--gold);line-height:1;transition:transform .3s}
+.hstat:hover .hstat-n{transform:scale(1.08)}
+.hstat-l{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-top:0.3rem}
+
+/* SECTIONS */
+.section{border-bottom:1px solid #D8DEE8}
+.sec-inner{padding:4.5rem 2.5rem}
+.sec-head{display:flex;align-items:baseline;gap:1.2rem;margin-bottom:3rem}
+.sec-num{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--muted);letter-spacing:0.1em}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.5vw,3.2rem);letter-spacing:0.02em;line-height:1;color:var(--navy)}
+.sec-title em{color:var(--gold);font-style:normal}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start}
+.about-text{font-size:0.95rem;line-height:1.95;color:#3A4560}
+.about-text strong{color:var(--navy);font-weight:500}
+.about-cards{display:flex;flex-direction:column;gap:1rem}
+.acard{padding:1.5rem;border-left:3px solid var(--gold);background:var(--white);transition:transform .3s ease,box-shadow .3s ease;cursor:default}
+.acard:hover{transform:translateX(6px);box-shadow:4px 0 20px rgba(201,168,76,0.12)}
+.acard-label{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem}
+.acard-title{font-family:'Playfair Display',serif;font-size:1rem;color:var(--navy);margin-bottom:0.2rem}
+.acard-sub{font-size:0.78rem;color:var(--muted)}
+
+/* ALTERNANCE */
+.alt-section{background:var(--navy)}
+.alt-inner{padding:4.5rem 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem}
+.alt-label{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;gap:0.8rem}
+.alt-label::before{content:'';width:20px;height:1px;background:var(--gold)}
+.alt-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3rem);color:var(--white);line-height:1;margin-bottom:0.5rem}
+.alt-company{font-family:'Playfair Display',serif;font-style:italic;font-size:1.4rem;color:var(--gold);margin-bottom:1.5rem}
+.alt-context{font-size:0.88rem;line-height:1.85;color:rgba(255,255,255,0.6)}
+.alt-badge{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:rgba(201,168,76,0.12);border:1px solid var(--border);
+  padding:0.5rem 1rem;margin-top:1.5rem;
+  font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);
+  animation:goldPulse 3s ease-in-out infinite;
+}
+.dot-blink{animation:dotBlink 1.5s ease-in-out infinite;color:#4CAF50}
+.mission-list{display:flex;flex-direction:column}
+.mission{
+  padding:1.2rem 0;border-bottom:1px solid rgba(201,168,76,0.12);
+  display:grid;grid-template-columns:28px 1fr;gap:1rem;align-items:start;
+  transition:background .3s,padding-left .3s;cursor:default;
+}
+.mission:first-child{border-top:1px solid rgba(201,168,76,0.12)}
+.mission:hover{background:rgba(201,168,76,0.04);padding-left:8px}
+.mission-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;margin-top:6px;transition:transform .3s}
+.mission:hover .mission-dot{transform:scale(1.6)}
+.mission-title{font-size:0.82rem;font-weight:500;color:var(--white);margin-bottom:0.3rem}
+.mission-desc{font-size:0.76rem;line-height:1.6;color:rgba(255,255,255,0.5)}
+
+/* EXPERIENCES */
+.exp-list{display:flex;flex-direction:column}
+.exp-item{
+  display:grid;grid-template-columns:160px 1fr;gap:2.5rem;
+  padding:2rem 0;border-bottom:1px solid #D8DEE8;align-items:start;
+  transition:background .25s,padding-left .25s;cursor:default;
+}
+.exp-item:hover{background:rgba(201,168,76,0.03);padding-left:10px}
+.exp-item:last-child{border-bottom:none}
+.exp-date{font-size:0.72rem;letter-spacing:0.1em;color:var(--muted);padding-top:3px}
+.exp-badge-type{display:inline-block;margin-top:0.5rem;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 0.6rem;background:var(--off);color:var(--muted);border:1px solid #D8DEE8}
+.exp-org{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.04em;color:var(--navy);margin-bottom:0.2rem}
+.exp-role{font-size:0.85rem;font-weight:500;color:var(--navy);margin-bottom:0.5rem}
+.exp-desc{font-size:0.8rem;line-height:1.75;color:var(--muted)}
+
+/* COMPETENCES */
+.comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.comp-card{
+  background:var(--white);padding:1.8rem;
+  border-top:3px solid transparent;
+  transition:border-color .3s,transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s;cursor:default;
+}
+.comp-card:hover{border-top-color:var(--gold);transform:translateY(-6px);box-shadow:0 16px 40px rgba(13,27,62,0.1)}
+.comp-icon-wrap{width:38px;height:38px;background:var(--off);display:flex;align-items:center;justify-content:center;margin-bottom:1rem;transition:background .3s,transform .3s;font-size:1.1rem}
+.comp-card:hover .comp-icon-wrap{background:rgba(201,168,76,0.15);transform:scale(1.1) rotate(-4deg)}
+.comp-name{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.04em;color:var(--navy);margin-bottom:0.6rem}
+.comp-desc{font-size:0.78rem;line-height:1.7;color:var(--muted)}
+.comp-full{
+  grid-column:span 3;background:var(--navy);padding:2rem;
+  display:flex;align-items:center;gap:2.5rem;transition:background .3s;cursor:default;
+}
+.comp-full:hover{background:var(--navy2)}
+.comp-full-num{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:rgba(201,168,76,0.2);line-height:1;flex-shrink:0;transition:color .3s}
+.comp-full:hover .comp-full-num{color:rgba(201,168,76,0.35)}
+.comp-full-text{font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;line-height:1.8;color:rgba(255,255,255,0.7)}
+
+/* REFLEXION */
+.reflex-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.reflex-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.3rem,2.5vw,1.8rem);line-height:1.6;color:var(--navy);position:relative}
+.reflex-quote em{color:var(--gold);font-style:normal}
+.reflex-quote::before{content:'"';font-size:4rem;color:var(--gold);opacity:0.25;display:block;line-height:0.8;margin-bottom:1rem;font-family:'Playfair Display',serif;transition:opacity .3s}
+.reflex-quote:hover::before{opacity:0.5}
+.reflex-text{font-size:0.9rem;line-height:1.9;color:#3A4560}
+.reflex-text strong{color:var(--navy);font-weight:500}
+
+/* OBJECTIFS */
+.obj-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid #D8DEE8}
+.obj-card{padding:2.5rem 2rem;border-right:1px solid #D8DEE8;transition:background .3s;cursor:default;position:relative;overflow:hidden}
+.obj-card::before{content:'';position:absolute;bottom:0;left:0;width:100%;height:3px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.obj-card:hover::before{transform:scaleX(1)}
+.obj-card:hover{background:rgba(201,168,76,0.03)}
+.obj-card:last-child{border-right:none}
+.obj-n{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;line-height:1;color:#D8DEE8;margin-bottom:1rem;transition:color .3s}
+.obj-card:hover .obj-n{color:rgba(201,168,76,0.3)}
+.obj-title{font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem}
+.obj-desc{font-size:0.85rem;line-height:1.8;color:#3A4560}
+.obj-icon{width:0;height:2px;background:var(--gold);margin-top:1.5rem;transition:width .5s cubic-bezier(.22,1,.36,1)}
+.obj-card:hover .obj-icon{width:40px}
+
+/* CONTACT */
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr}
+.contact-left{background:var(--navy);padding:3.5rem 2.5rem;border-right:1px solid var(--border)}
+.contact-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);line-height:0.95;color:var(--white);margin-bottom:1.5rem}
+.contact-big em{color:var(--gold);font-style:normal}
+.contact-sub{font-size:0.85rem;line-height:1.7;color:rgba(255,255,255,0.45);margin-bottom:2rem}
+.contact-right{padding:3.5rem 2.5rem;background:var(--white)}
+.crow{display:flex;justify-content:space-between;align-items:center;padding:1.1rem 0;border-bottom:1px solid var(--off);font-size:0.85rem;transition:padding-left .2s;cursor:default}
+.crow:hover{padding-left:6px}
+.crow:first-child{border-top:1px solid var(--off)}
+.clabel{font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)}
+.cval{font-weight:400;color:var(--navy)}
+.cval.accent{color:var(--gold)}
+.cavail{color:#2E7D32;font-weight:500;font-size:0.82rem}
+
+/* CURSOR */
+.cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s;mix-blend-mode:difference}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(201,168,76,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s}
+
+footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border)}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;color:rgba(255,255,255,0.3)}
+.footer-text{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.2)}
+
+@media(max-width:800px){
+  .cursor,.cursor-ring{display:none}
+  .nav-links{display:none}
+  .hero,.about-grid,.alt-inner,.reflex-grid,.contact-wrap{grid-template-columns:1fr}
+  .hero-left,.hero-right{padding:2rem 1.2rem}
+  .hero-right{padding-bottom:2rem}
+  .comp-grid{grid-template-columns:1fr}
+  .comp-full{grid-column:span 1}
+  .obj-wrap{grid-template-columns:1fr}
+  .obj-card{border-right:none;border-bottom:1px solid #D8DEE8}
+  .obj-card:last-child{border-bottom:none}
+  .sec-inner,.alt-inner{padding:2.5rem 1.2rem}
+  .exp-item{grid-template-columns:1fr;gap:0.5rem}
+  footer{flex-direction:column;gap:0.5rem;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <div class="nav-logo">VIVIER <span>Nicolas</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">Présentation</a></li>
+    <li><a href="#alternance">Alternance</a></li>
+    <li><a href="#exp">Expériences</a></li>
+    <li><a href="#comp">Compétences</a></li>
+    <li><a href="#obj">Objectifs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Portfolio · Présentation professionnelle</p>
+    <div class="hero-name">VIVIER</div>
+    <div class="hero-name-sub">Nicolas</div>
+    <p class="hero-tagline">Étudiant en BUT GEA, alternant chez Véolia —<br>bâtir mon futur dans le management et la gestion.</p>
+    <div class="hero-cta">
+      <a href="#alternance" class="btn btn-gold">Mon alternance</a>
+      <a href="#contact" class="btn btn-ghost">Me contacter</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <p class="hero-intro-label">En quelques mots</p>
+    <p class="hero-intro-text">Passionné par la gestion et l'organisation, je développe mes compétences au sein de Véolia Grand Est tout en poursuivant mon BUT GEA à l'IUT Nancy-Charlemagne.</p>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-n">BUT</div><div class="hstat-l">GEA · IUT Nancy</div></div>
+      <div class="hstat"><div class="hstat-n">2e</div><div class="hstat-l">Année</div></div>
+      <div class="hstat"><div class="hstat-n">5+</div><div class="hstat-l">Expériences</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="sec-inner">
+    <div class="sec-head reveal">
+      <span class="sec-num">01</span>
+      <h2 class="sec-title">Me <em>Concernant</em></h2>
+    </div>
+    <div class="about-grid">
+      <p class="about-text reveal d1">Après l'obtention de mon baccalauréat <strong>STMG</strong>, j'ai intégré le <strong>BUT Gestion des Entreprises et Administrations</strong> à l'IUT Nancy-Charlemagne. Cette formation me permet d'acquérir des compétences solides en gestion, management et organisation.<br><br>En deuxième année, j'ai choisi l'<strong>alternance</strong> pour conjuguer théorie et pratique au sein de Véolia, développant des compétences concrètes au contact d'une grande organisation internationale.<br><br>Mon ambition : évoluer vers des fonctions de <strong>management et de chef de projet</strong>, en pilotant des équipes au sein d'une organisation structurée.</p>
+      <div class="about-cards">
+        <div class="acard reveal d2"><div class="acard-label">Formation</div><div class="acard-title">BUT GEA — 2e année</div><div class="acard-sub">IUT Nancy-Charlemagne · Université de Lorraine</div></div>
+        <div class="acard reveal d3"><div class="acard-label">Alternance</div><div class="acard-title">Véolia Recyclage & Valorisation</div><div class="acard-sub">Service Facturation & Recouvrement · Grand Est</div></div>
+        <div class="acard reveal d4"><div class="acard-label">Parcours visé</div><div class="acard-title">GEMA — Gestion & Management</div><div class="acard-sub">Poursuite en Master · Véolia</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt-section" id="alternance">
+  <div class="alt-inner">
+    <div class="reveal-left">
+      <p class="alt-label">Expérience professionnelle actuelle</p>
+      <h2 class="alt-title">ALTERNANT<br>EN GESTION</h2>
+      <p class="alt-company">Véolia Recyclage & Valorisation</p>
+      <p class="alt-context">Intégré à la <strong style="color:#fff">Direction Administrative et Financière</strong> de l'activité Recyclage & Valorisation pour la région Grand Est, au sein du <strong style="color:#fff">service facturation et recouvrement</strong>.<br><br>Véolia est présent dans 50 pays, emploie 220 000 collaborateurs et réalise ~45 milliards d'euros de CA. La région Grand Est valorise plusieurs centaines de milliers de tonnes de déchets chaque année.</p>
+      <div class="alt-badge"><span class="dot-blink">●</span> En poste · Alternance 2e année BUT GEA</div>
+    </div>
+    <div class="reveal-right">
+      <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem">Missions confiées</p>
+      <div class="mission-list">
+        <div class="mission"><div class="mission-dot"></div><div><div class="mission-title">Suivi des indicateurs de performance</div><div class="mission-desc">Mise à jour mensuelle des KPIs : délais de facturation, taux d'avoirs. Automatisation via Google Apps Script.</div></div></div>
+        <div class="mission"><div class="mission-dot"></div><div><div class="mission-title">Suivi des provisions CA/BA</div><div class="mission-desc">Mise à jour des fichiers de provisions via Looker Studio. Automatisation du partage des fichiers.</div></div></div>
+        <div class="mission"><div class="mission-dot"></div><div><div class="mission-title">Rédaction de procédures internes</div><div class="mission-desc">Formalisation des processus de facturation pour uniformiser les pratiques du service.</div></div></div>
+        <div class="mission"><div class="mission-dot"></div><div><div class="mission-title">Développement d'un outil centralisateur</div><div class="mission-desc">Création d'un site Google Sites regroupant fichiers, indicateurs, procédures et automatisations.</div></div></div>
+        <div class="mission"><div class="mission-dot"></div><div><div class="mission-title">Assistanat & base de données</div><div class="mission-desc">Comptes rendus de réunions, nettoyage et mise à jour du logiciel de facturation.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="exp">
+  <div class="sec-inner">
+    <div class="sec-head reveal"><span class="sec-num">02</span><h2 class="sec-title">Autres <em>Expériences</em></h2></div>
+    <div class="exp-list">
+      <div class="exp-item reveal d1"><div><div class="exp-date">Mai — Juin 2025</div><div class="exp-badge-type">Stage</div></div><div><div class="exp-org">Université de Lorraine</div><div class="exp-role">DADRH — Création d'une base de données RH</div><div class="exp-desc">Création d'une base Excel pour 3 200 agents BIATSS. Analyse de données sensibles, RGPD, collaboration sur la masse salariale.</div></div></div>
+      <div class="exp-item reveal d2"><div><div class="exp-date">Jan — Juil 2024</div><div class="exp-badge-type">Service Civique</div></div><div><div class="exp-org">DSDEN 54</div><div class="exp-role">École George de la Tour — Appui pédagogique</div><div class="exp-desc">Soutien à l'équipe pédagogique au sein de la DSDEN de Meurthe-et-Moselle.</div></div></div>
+      <div class="exp-item reveal d3"><div><div class="exp-date">Juin — Août 2024</div><div class="exp-badge-type">Job étudiant</div></div><div><div class="exp-org">Burger King</div><div class="exp-role">Équipier polyvalent — FRADRIVE</div><div class="exp-desc">Plonge, service à table, drive. Esprit d'équipe et adaptabilité en environnement exigeant.</div></div></div>
+      <div class="exp-item reveal d4"><div><div class="exp-date">Oct — Déc 2023</div><div class="exp-badge-type">Contrat étudiant</div></div><div><div class="exp-org">Univ. Haute Alsace</div><div class="exp-role">Learning Center — Soutien informatique</div><div class="exp-desc">Aide à l'utilisation des nouvelles technologies et appui au personnel des bibliothèques.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="comp">
+  <div class="sec-inner">
+    <div class="sec-head reveal"><span class="sec-num">03</span><h2 class="sec-title"><em>Compétences</em></h2></div>
+    <div class="comp-grid">
+      <div class="comp-card reveal d1"><div class="comp-icon-wrap">📊</div><div class="comp-name">Analyse de données</div><div class="comp-desc">Traitement de données financières, Excel, indicateurs de performance, Looker Studio.</div></div>
+      <div class="comp-card reveal d2"><div class="comp-icon-wrap">⚙️</div><div class="comp-name">Automatisation</div><div class="comp-desc">Scripts Google Apps Script, automatisation des reportings et partages de fichiers.</div></div>
+      <div class="comp-card reveal d3"><div class="comp-icon-wrap">📋</div><div class="comp-name">Gestion administrative</div><div class="comp-desc">Rédaction de procédures, comptes rendus, gestion documentaire et organisation de service.</div></div>
+      <div class="comp-card reveal d4"><div class="comp-icon-wrap">👥</div><div class="comp-name">Ressources Humaines</div><div class="comp-desc">Données RH sensibles, application du RGPD, collaboration avec la masse salariale.</div></div>
+      <div class="comp-card reveal d5"><div class="comp-icon-wrap">🤝</div><div class="comp-name">Travail en équipe</div><div class="comp-desc">Coordination inter-services, organisation d'événements, communication interne.</div></div>
+      <div class="comp-card reveal d6"><div class="comp-icon-wrap">📝</div><div class="comp-name">Analyse organisationnelle</div><div class="comp-desc">Monographies, compréhension des structures d'administrations publiques et privées.</div></div>
+      <div class="comp-full reveal"><div class="comp-full-num">SAÉ</div><p class="comp-full-text">Formé par l'IUT Nancy-Charlemagne via des Situations d'Apprentissage et d'Évaluation — monographie, coordination d'événement, stage en entreprise et alternance professionnelle.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="reflex">
+  <div class="sec-inner">
+    <div class="sec-head reveal"><span class="sec-num">04</span><h2 class="sec-title"><em>Réflexions</em></h2></div>
+    <div class="reflex-grid">
+      <p class="reflex-quote reveal-left">Mon alternance chez <em>Véolia</em> confirme que le management et la gestion de projet sont ma voie.</p>
+      <p class="reflex-text reveal-right">Suite aux compétences acquises lors de mon parcours, et plus particulièrement grâce à mon alternance au sein du service facturation de Véolia, j'ai confirmé mon orientation vers le <strong>parcours GEMA</strong>.<br><br>Mon intérêt à <strong>contribuer à une organisation en pilotant une équipe</strong> ou en tant que chef de projet se trouve pleinement nourri par cette expérience. La gestion de données, l'amélioration des processus et la collaboration inter-services renforcent chaque jour ma conviction.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="obj">
+  <div class="sec-inner">
+    <div class="sec-head reveal"><span class="sec-num">05</span><h2 class="sec-title">Objectifs <em>Futurs</em></h2></div>
+    <div class="obj-wrap">
+      <div class="obj-card reveal d1"><div class="obj-n">01</div><div class="obj-title">Parcours GEMA</div><div class="obj-desc">Intégrer le parcours GEMA en alternance et approfondir mes compétences en gestion et management au sein de Véolia.</div><div class="obj-icon"></div></div>
+      <div class="obj-card reveal d2"><div class="obj-n">02</div><div class="obj-title">Montée en compétences</div><div class="obj-desc">Approfondir ma maîtrise des outils financiers, de l'automatisation et du pilotage de projets au sein d'un grand groupe.</div><div class="obj-icon"></div></div>
+      <div class="obj-card reveal d3"><div class="obj-n">03</div><div class="obj-title">Master & CDI Véolia</div><div class="obj-desc">Poursuivre mes études en master et décrocher un CDI chez Véolia pour m'épanouir durablement dans le management.</div><div class="obj-icon"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="contact-wrap">
+    <div class="contact-left reveal-left">
+      <div class="contact-big">ÉCRIVEZ-<br>MOI <em>.</em></div>
+      <p class="contact-sub">Étudiant en BUT GEA 2e année en alternance chez Véolia. Disponible pour tout échange professionnel ou académique.</p>
+      <a href="mailto:nicolas.ginko@gmail.com" class="btn btn-gold" style="margin-top:1rem">Envoyer un email</a>
+    </div>
+    <div class="contact-right reveal-right">
+      <div class="crow"><span class="clabel">Téléphone</span><span class="cval">06 24 03 36 22</span></div>
+      <div class="crow"><span class="clabel">Email</span><span class="cval accent">nicolas.ginko@gmail.com</span></div>
+      <div class="crow"><span class="clabel">Localisation</span><span class="cval">Nancy, France</span></div>
+      <div class="crow"><span class="clabel">Formation</span><span class="cval">BUT GEA · IUT Nancy-Charlemagne</span></div>
+      <div class="crow"><span class="clabel">Alternance</span><span class="cval">Véolia R&V Grand Est</span></div>
+      <div class="crow"><span class="clabel">LinkedIn</span><span class="cval accent">Profil disponible ↗</span></div>
+      <div class="crow"><span class="clabel">Statut</span><span class="cavail">● En alternance · Véolia</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Vivier Nicolas</div>
+  <div class="footer-text">BUT GEA · IUT Nancy-Charlemagne · 2025</div>
+  <div class="footer-text">Portfolio Professionnel</div>
+</footer>
+
+<script>
+const prog = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const st = window.scrollY;
+  const dh = document.documentElement.scrollHeight - window.innerHeight;
+  prog.style.width = (st / dh * 100) + '%';
+});
+
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+document.querySelectorAll('a,button,.comp-card,.acard,.mission,.obj-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.width='18px';cursor.style.height='18px';ring.style.width='52px';ring.style.height='52px'; });
+  el.addEventListener('mouseleave', () => { cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px'; });
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => observer.observe(el));
+
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id'); });
+  navLinks.forEach(a => { a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : ''; });
+});
+</script>
+</body>
+</html>
