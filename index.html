@@ -396,20 +396,120 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
 .footer-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:1rem;letter-spacing:0.1em;color:rgba(255,255,255,0.3)}
 .footer-text{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.2)}
 
-@media(max-width:800px){
-  .cursor,.cursor-ring{display:none}
-  .nav-links{display:none}
-  .hero,.about-grid,.alt-inner,.reflex-grid,.contact-wrap{grid-template-columns:1fr}
-  .hero-left,.hero-right{padding:2rem 1.2rem}
-  .hero-right{padding-bottom:2rem}
-  .comp-grid{grid-template-columns:1fr}
-  .comp-full{grid-column:span 1}
+/* ── HAMBURGER ── */
+.nav-hamburger{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  width:36px;height:36px;background:none;border:none;cursor:pointer;padding:4px;z-index:1001;
+}
+.nav-hamburger span{
+  display:block;width:22px;height:2px;background:var(--white);
+  transition:transform .3s,opacity .3s;border-radius:2px;
+}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ── TABLETTE (≤900px) ── */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .hero-right{display:none}
+  .hero-left{padding:3rem 1.8rem 2.5rem}
+  .hero-name{font-size:clamp(3rem,10vw,5rem)}
+  .hero-name-sub{font-size:clamp(3rem,10vw,5rem)}
+  .about-grid{grid-template-columns:1fr;gap:2rem}
+  .alt-inner{grid-template-columns:1fr;gap:2rem}
+  .reflex-grid{grid-template-columns:1fr;gap:2rem}
+  .contact-wrap{grid-template-columns:1fr;gap:2rem}
+  .projets-grid{grid-template-columns:1fr;gap:2rem}
+  .hobbies-grid{grid-template-columns:1fr;gap:2rem}
+  .comp-grid{grid-template-columns:repeat(2,1fr)}
   .obj-wrap{grid-template-columns:1fr}
-  .obj-card{border-right:none;border-bottom:1px solid #D8DEE8}
+  .obj-card{border-right:none;border-bottom:1px solid #C0D4E8}
   .obj-card:last-child{border-bottom:none}
-  .sec-inner,.alt-inner{padding:2.5rem 1.2rem}
-  .exp-item{grid-template-columns:1fr;gap:0.5rem}
+  .sec-inner{padding:3.5rem 1.8rem}
+  .alt-inner{padding:3rem 1.8rem}
   footer{flex-direction:column;gap:0.5rem;text-align:center}
+}
+
+/* ── MOBILE (≤600px) ── */
+@media(max-width:600px){
+
+  /* Navbar hamburger */
+  nav{padding:0 1.2rem;height:54px}
+  .nav-links{
+    display:flex;flex-direction:column;
+    position:fixed;top:54px;left:0;right:0;bottom:0;
+    background:rgba(11,37,69,0.98);
+    backdrop-filter:blur(12px);
+    align-items:center;justify-content:center;
+    gap:2rem;
+    transform:translateX(100%);
+    transition:transform .35s cubic-bezier(.22,1,.36,1);
+    z-index:999;
+  }
+  .nav-links.open{transform:translateX(0)}
+  .nav-links a{font-size:1.4rem;letter-spacing:0.12em;color:var(--white)}
+  .nav-links a:hover{color:var(--gold)}
+  .nav-hamburger{display:flex}
+
+  /* Hero */
+  .hero-left{padding:2rem 1.2rem 2rem}
+  .hero-name,.hero-name-sub{font-size:clamp(2.6rem,12vw,4rem)}
+  .hero-tagline{font-size:0.85rem}
+  .hero-stats{gap:1.2rem}
+  .hstat-n{font-size:1.6rem}
+  .hero-bottom{padding-top:1.5rem}
+  .btn{padding:0.7rem 1.4rem;font-size:0.7rem}
+  .hero-cta{flex-direction:column;gap:0.8rem;align-items:flex-start}
+
+  /* Sections */
+  .sec-inner{padding:2.5rem 1.2rem}
+  .alt-inner{padding:2.5rem 1.2rem}
+  .sec-title{font-size:clamp(1.8rem,7vw,2.5rem)}
+
+  /* About */
+  .about-grid{grid-template-columns:1fr;gap:1.8rem}
+  .about-text-col{gap:1.2rem}
+  .about-cards{gap:0.8rem}
+
+  /* Alt */
+  .alt-inner{grid-template-columns:1fr;gap:2rem}
+  .alt-title{font-size:clamp(1.8rem,7vw,2.5rem)}
+  .alt-company{font-size:1.1rem}
+
+  /* Exp */
+  .exp-item{grid-template-columns:1fr;gap:0.4rem}
+  .exp-org{font-size:1.1rem}
+
+  /* Projets */
+  .projets-grid{grid-template-columns:1fr;gap:1.5rem}
+  .projet-card{flex-direction:column}
+
+  /* Compétences */
+  .comp-grid{grid-template-columns:1fr;gap:1rem}
+
+  /* Hobbies */
+  .hobbies-grid{grid-template-columns:1fr;gap:1.5rem}
+  .hobby-qualities{gap:0.4rem}
+
+  /* Réflexions */
+  .reflex-grid{grid-template-columns:1fr;gap:1.8rem}
+  .reflex-quote{padding:1.2rem;font-size:1rem}
+  .reflex-guillemet{font-size:2rem}
+
+  /* Objectifs */
+  .obj-wrap{grid-template-columns:1fr}
+  .obj-card{border-right:none;border-bottom:1px solid #C0D4E8;padding:1.8rem 1.2rem}
+  .obj-card:last-child{border-bottom:none}
+  .obj-n{font-size:2.5rem}
+
+  /* Contact */
+  .contact-wrap{grid-template-columns:1fr;gap:2rem;padding:2.5rem 1.2rem}
+  .contact-big{font-size:clamp(2rem,8vw,3rem)}
+  .crow{flex-direction:column;gap:0.2rem;padding:0.8rem 0}
+
+  /* Footer */
+  footer{flex-direction:column;gap:0.4rem;text-align:center;padding:1.5rem 1.2rem}
 }
 </style>
 </head>
@@ -421,7 +521,10 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
 
 <nav>
   <a href="#hero" class="nav-logo" style="text-decoration:none;cursor:pointer">VIVIER <span>Nicolas</span></a>
-  <ul class="nav-links">
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
     <li><a href="#about">Présentation</a></li>
     <li><a href="#alternance">Alternance</a></li>
     <li><a href="#exp">Expériences</a></li>
@@ -860,11 +963,11 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
     <div class="contact-left reveal-left">
       <div class="contact-big">ÉCRIVEZ-<br>MOI <em>.</em></div>
       <p class="contact-sub">Étudiant en BUT GEA 2e année en alternance chez Véolia. Disponible pour tout échange professionnel ou académique.</p>
-      <a href="mailto:nicolas.ginko@gmail.com" class="btn btn-gold" style="margin-top:1rem">Envoyer un email</a>
+      <a href="/cdn-cgi/l/email-protection#b8d6d1dbd7d4d9cb96dfd1d6d3d7f8dfd5d9d1d496dbd7d5" class="btn btn-gold" style="margin-top:1rem">Envoyer un email</a>
     </div>
     <div class="contact-right reveal-right">
-      <div class="crow"><span class="clabel">Téléphone</span><span class="cval">06 24 03 36 22</span></div>
-      <div class="crow"><span class="clabel">Email</span><span class="cval accent"><a href="mailto:nicolas.ginko@gmail.com" style="color:var(--gold);text-decoration:none">nicolas.ginko@gmail.com</a></span></div>
+      <div class="crow"><span class="clabel">Téléphone</span><span class="cval">+33 6 24 03 36 22</span></div>
+      <div class="crow"><span class="clabel">Email</span><span class="cval accent"><a href="/cdn-cgi/l/email-protection#d2bcbbb1bdbeb3a1fcb5bbbcb9bd92b5bfb3bbbefcb1bdbf" style="color:var(--gold);text-decoration:none"><span class="__cf_email__" data-cfemail="5b35323834373a28753c323530341b3c363a323775383436">[email&#160;protected]</span></a></span></div>
       <div class="crow"><span class="clabel">Localisation</span><span class="cval">Nancy, France</span></div>
       <div class="crow"><span class="clabel">Formation</span><span class="cval">BUT GEA · IUT Nancy-Charlemagne</span></div>
       <div class="crow"><span class="clabel">Alternance</span><span class="cval">Véolia R&V Grand Est</span></div>
@@ -880,7 +983,33 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
   <div class="footer-text">Portfolio Professionnel</div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Détection tactile : masquer le curseur custom uniquement sur touch
+const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+if (isTouch) {
+  document.getElementById('cursor').style.display = 'none';
+  document.getElementById('cursorRing').style.display = 'none';
+}
+
+// Hamburger menu
+const hamburger = document.getElementById('hamburger');
+const navLinks  = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('open');
+  hamburger.classList.toggle('open', open);
+  hamburger.setAttribute('aria-expanded', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+});
+// Fermer au clic sur un lien
+navLinks.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', false);
+    document.body.style.overflow = '';
+  });
+});
+
 const prog = document.getElementById('progress');
 window.addEventListener('scroll', () => {
   const st = window.scrollY;
@@ -911,11 +1040,4 @@ document.querySelectorAll('a,button,.comp-card,.acard,.mission,.obj-card').forEa
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
-  });
-}, { threshold: 0.12 });
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => observer.observe(el));
-
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-links a');
-window.addE
+    if (e.isIntersecting) { e.target.classList.add('visible')
