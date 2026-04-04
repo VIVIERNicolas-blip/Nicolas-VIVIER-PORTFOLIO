@@ -963,11 +963,11 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
     <div class="contact-left reveal-left">
       <div class="contact-big">ÉCRIVEZ-<br>MOI <em>.</em></div>
       <p class="contact-sub">Étudiant en BUT GEA 2e année en alternance chez Véolia. Disponible pour tout échange professionnel ou académique.</p>
-      <a href="/cdn-cgi/l/email-protection#b8d6d1dbd7d4d9cb96dfd1d6d3d7f8dfd5d9d1d496dbd7d5" class="btn btn-gold" style="margin-top:1rem">Envoyer un email</a>
+      <a href="mailto:nicolas.ginko@gmail.com" class="btn btn-gold" style="margin-top:1rem">Envoyer un email</a>
     </div>
     <div class="contact-right reveal-right">
       <div class="crow"><span class="clabel">Téléphone</span><span class="cval">+33 6 24 03 36 22</span></div>
-      <div class="crow"><span class="clabel">Email</span><span class="cval accent"><a href="/cdn-cgi/l/email-protection#d2bcbbb1bdbeb3a1fcb5bbbcb9bd92b5bfb3bbbefcb1bdbf" style="color:var(--gold);text-decoration:none"><span class="__cf_email__" data-cfemail="5b35323834373a28753c323530341b3c363a323775383436">[email&#160;protected]</span></a></span></div>
+      <div class="crow"><span class="clabel">Email</span><span class="cval accent"><a href="mailto:nicolas.ginko@gmail.com" style="color:var(--gold);text-decoration:none">nicolas.ginko@gmail.com</a></span></div>
       <div class="crow"><span class="clabel">Localisation</span><span class="cval">Nancy, France</span></div>
       <div class="crow"><span class="clabel">Formation</span><span class="cval">BUT GEA · IUT Nancy-Charlemagne</span></div>
       <div class="crow"><span class="clabel">Alternance</span><span class="cval">Véolia R&V Grand Est</span></div>
@@ -982,62 +982,108 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
   <div class="footer-text">BUT GEA · IUT Nancy-Charlemagne · 2025</div>
   <div class="footer-text">Portfolio Professionnel</div>
 </footer>
+<script>
+// ── HAMBURGER MENU ──
+(function() {
+  var btn   = document.getElementById('hamburger');
+  var menu  = document.getElementById('navLinks');
+  if (!btn || !menu) return;
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// Détection tactile : masquer le curseur custom uniquement sur touch
-const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-if (isTouch) {
-  document.getElementById('cursor').style.display = 'none';
-  document.getElementById('cursorRing').style.display = 'none';
+  btn.addEventListener('click', function() {
+    var isOpen = menu.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+
+  menu.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      menu.classList.remove('open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+})();
+
+// ── BARRE DE PROGRESSION ──
+var prog = document.getElementById('progress');
+if (prog) {
+  window.addEventListener('scroll', function() {
+    var st = window.scrollY;
+    var dh = document.documentElement.scrollHeight - window.innerHeight;
+    prog.style.width = (dh > 0 ? (st / dh * 100) : 0) + '%';
+  });
 }
 
-// Hamburger menu
-const hamburger = document.getElementById('hamburger');
-const navLinks  = document.getElementById('navLinks');
-hamburger.addEventListener('click', () => {
-  const open = navLinks.classList.toggle('open');
-  hamburger.classList.toggle('open', open);
-  hamburger.setAttribute('aria-expanded', open);
-  document.body.style.overflow = open ? 'hidden' : '';
-});
-// Fermer au clic sur un lien
-navLinks.querySelectorAll('a').forEach(a => {
-  a.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    hamburger.classList.remove('open');
-    hamburger.setAttribute('aria-expanded', false);
-    document.body.style.overflow = '';
+// ── CURSEUR CUSTOM (desktop uniquement) ──
+var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+var cursorEl = document.getElementById('cursor');
+var ringEl   = document.getElementById('cursorRing');
+
+if (isTouch) {
+  if (cursorEl) cursorEl.style.display = 'none';
+  if (ringEl)   ringEl.style.display   = 'none';
+} else {
+  var mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', function(e) {
+    mx = e.clientX;
+    my = e.clientY;
+    if (cursorEl) {
+      cursorEl.style.left = mx + 'px';
+      cursorEl.style.top  = my + 'px';
+    }
+  });
+
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    if (ringEl) {
+      ringEl.style.left = rx + 'px';
+      ringEl.style.top  = ry + 'px';
+    }
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  document.querySelectorAll('a,button,.comp-card,.acard,.mission,.obj-card').forEach(function(el) {
+    el.addEventListener('mouseenter', function() {
+      if (cursorEl) { cursorEl.style.width='18px'; cursorEl.style.height='18px'; }
+      if (ringEl)   { ringEl.style.width='52px';   ringEl.style.height='52px'; }
+    });
+    el.addEventListener('mouseleave', function() {
+      if (cursorEl) { cursorEl.style.width='10px'; cursorEl.style.height='10px'; }
+      if (ringEl)   { ringEl.style.width='36px';   ringEl.style.height='36px'; }
+    });
+  });
+}
+
+// ── SCROLL SPY (lien actif dans la nav) ──
+var sections = document.querySelectorAll('section[id]');
+var navLinks  = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', function() {
+  var current = '';
+  sections.forEach(function(s) {
+    if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id');
+  });
+  navLinks.forEach(function(a) {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
   });
 });
 
-const prog = document.getElementById('progress');
-window.addEventListener('scroll', () => {
-  const st = window.scrollY;
-  const dh = document.documentElement.scrollHeight - window.innerHeight;
-  prog.style.width = (st / dh * 100) + '%';
+// ── ANIMATIONS REVEAL ──
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(function(el) {
+  observer.observe(el);
 });
-
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx + 'px';
-  cursor.style.top = my + 'px';
-});
-function animRing() {
-  rx += (mx - rx) * 0.12;
-  ry += (my - ry) * 0.12;
-  ring.style.left = rx + 'px';
-  ring.style.top = ry + 'px';
-  requestAnimationFrame(animRing);
-}
-animRing();
-document.querySelectorAll('a,button,.comp-card,.acard,.mission,.obj-card').forEach(el => {
-  el.addEventListener('mouseenter', () => { cursor.style.width='18px';cursor.style.height='18px';ring.style.width='52px';ring.style.height='52px'; });
-  el.addEventListener('mouseleave', () => { cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px'; });
-});
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible')
+</script>
+</body>
+</html>
