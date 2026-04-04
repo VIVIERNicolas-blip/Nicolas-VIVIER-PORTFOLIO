@@ -434,28 +434,54 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
 /* ── MOBILE (≤600px) ── */
 @media(max-width:600px){
 
-  /* Navbar hamburger */
+  /* Navbar */
   nav{padding:0 1.2rem;height:54px}
+  .nav-hamburger{display:flex}
+
+  /* Menu plein écran — fond bleu royal, texte or */
   .nav-links{
-    display:flex;flex-direction:column;
-    position:fixed;top:54px;left:0;right:0;bottom:0;
-    background:rgba(11,37,69,0.98);
-    backdrop-filter:blur(12px);
-    align-items:center;justify-content:center;
-    gap:2rem;
+    display:flex;
+    flex-direction:column;
+    position:fixed;
+    top:0;left:0;right:0;bottom:0;   /* couvre TOUT l'écran */
+    background:#0B2545;               /* bleu royal plein, pas transparent */
+    align-items:center;
+    justify-content:center;
+    gap:2.5rem;
+    list-style:none;
+    /* caché par défaut : glisse depuis la droite */
     transform:translateX(100%);
-    transition:transform .35s cubic-bezier(.22,1,.36,1);
-    z-index:999;
+    transition:transform .4s cubic-bezier(.22,1,.36,1);
+    z-index:1000;
   }
   .nav-links.open{transform:translateX(0)}
+
+  /* Liens : Cormorant Garamond, or, grands */
   .nav-links a{
     font-family:'Cormorant Garamond',Georgia,serif;
-    font-size:1.8rem;font-style:italic;letter-spacing:0.08em;
-    color:var(--white);text-decoration:none;
-    transition:color .2s;
+    font-style:italic;
+    font-size:2rem;
+    letter-spacing:0.1em;
+    color:#C9A84C;                    /* or */
+    text-decoration:none;
+    transition:opacity .2s,transform .2s;
+    display:block;
+    text-align:center;
   }
-  .nav-links a:hover{color:var(--gold)}
-  .nav-hamburger{display:flex}
+  .nav-links a:hover{
+    opacity:0.75;
+    transform:translateY(-2px);
+  }
+
+  /* Hamburger au-dessus du menu (z-index > menu) */
+  .nav-hamburger{
+    z-index:1001;
+    position:relative;
+  }
+  /* Barres or — visibles sur fond bleu ET sur fond blanc */
+  .nav-hamburger span{background:#C9A84C}
+  /* Quand menu ouvert : barres restent or sur fond bleu */
+  .nav-hamburger.open span{background:#C9A84C}
 
   /* Hero */
   .hero-left{padding:2rem 1.2rem 2rem}
@@ -990,7 +1016,7 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 
-  // HAMBURGER
+  // HAMBURGER - menu plein ecran
   var btn  = document.getElementById('hamburger');
   var menu = document.getElementById('navLinks');
   if (btn && menu) {
@@ -1008,7 +1034,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // PROGRESSION
+  // BARRE DE PROGRESSION
   var prog = document.getElementById('progress');
   if (prog) {
     window.addEventListener('scroll', function() {
@@ -1017,7 +1043,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // CURSEUR
+  // CURSEUR CUSTOM (desktop uniquement)
   var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
   var cur  = document.getElementById('cursor');
   var ring = document.getElementById('cursorRing');
@@ -1067,7 +1093,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // REVEAL
   var obs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
-      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
     });
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(function(el) {
