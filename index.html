@@ -287,7 +287,7 @@ nav{
 .alt-inner{padding:4.5rem 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem}
 .alt-label{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;gap:0.8rem}
 .alt-label::before{content:'';width:20px;height:1px;background:var(--gold)}
-.alt-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,4vw,3rem);color:var(--white);line-height:1;margin-bottom:0.5rem;font-style:italic;}
+.alt-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1.4rem,3vw,2.2rem);color:var(--white);line-height:1.2;margin-bottom:0.5rem;font-style:italic;white-space:nowrap}
 .alt-company{font-family:'Playfair Display',serif;font-style:italic;font-size:1.4rem;color:var(--gold);margin-bottom:1.5rem}
 .alt-context{font-size:0.88rem;line-height:1.85;color:rgba(255,255,255,0.75)}
 .alt-badge{
@@ -376,7 +376,7 @@ nav{
 /* CONTACT */
 .contact-wrap{display:grid;grid-template-columns:1fr 1fr}
 .contact-left{background:var(--navy);padding:3.5rem 2.5rem;border-right:1px solid var(--border)}
-.contact-big{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.5rem,5vw,4rem);line-height:0.95;color:var(--white);margin-bottom:1.5rem}
+.contact-big{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1.8rem,4vw,3.2rem);line-height:1.1;color:var(--white);margin-bottom:1.5rem;white-space:nowrap}
 .contact-big em{color:var(--gold);font-style:normal}
 .contact-sub{font-size:0.85rem;line-height:1.7;color:rgba(255,255,255,0.45);margin-bottom:2rem}
 .contact-right{padding:3.5rem 2.5rem;background:var(--white)}
@@ -438,39 +438,42 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
   nav{padding:0 1.2rem;height:54px}
   .nav-hamburger{display:flex}
 
-  /* Menu hamburger */
+  /* Menu hamburger — dropdown élégant style portfolio */
   .nav-links{
     display:flex;
     flex-direction:column;
     position:fixed;
-    top:0;left:0;
-    width:100%;height:100%;
-    background:rgba(11,37,69,0.96);
-    align-items:flex-end;
-    justify-content:center;
-    gap:2.2rem;
+    top:54px;right:0;
+    width:220px;
+    background:var(--white);
+    border-left:3px solid var(--gold);
+    border-bottom:3px solid var(--gold);
+    box-shadow:-4px 8px 32px rgba(11,37,69,0.2);
     list-style:none;
-    padding:0 2.5rem 0 0;
-    transform:translateX(100%);
-    transition:transform .4s cubic-bezier(.22,1,.36,1);
+    padding:0.4rem 0;
+    transform:translateX(110%);
+    transition:transform .35s cubic-bezier(.22,1,.36,1);
     z-index:9998;
   }
   .nav-links.open{transform:translateX(0)}
+  .nav-links li{width:100%}
   .nav-links a{
     font-family:'Cormorant Garamond',Georgia,serif;
     font-style:italic;
-    font-weight:700;
-    font-size:2.2rem;
-    letter-spacing:0.08em;
-    color:#C9A84C;
+    font-weight:600;
+    font-size:1.15rem;
+    letter-spacing:0.06em;
+    color:var(--navy);
     text-decoration:none;
-    transition:opacity .2s,transform .2s;
     display:block;
-    text-align:right;
     width:100%;
-    text-shadow:0 1px 4px rgba(0,0,0,0.5);
+    padding:0.85rem 1.5rem;
+    border-bottom:1px solid #E8F0F8;
+    transition:background .18s,color .18s,padding-left .18s;
+    text-align:left;
   }
-  .nav-links a:hover{opacity:0.75;transform:translateX(-4px)}
+  .nav-links li:last-child a{border-bottom:none}
+  .nav-links a:hover{background:var(--off);color:var(--gold);padding-left:2rem}
   .nav-hamburger{position:relative;z-index:9999}
   .nav-hamburger span{background:#C9A84C}
   .nav-hamburger.open span{background:#C9A84C}
@@ -827,7 +830,7 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
   <div class="alt-inner">
     <div class="reveal-left">
       <p class="alt-label">Expérience professionnelle actuelle</p>
-      <h2 class="alt-title">Alternant —<br>Chargé de Facturation</h2>
+      <h2 class="alt-title">Alternant — Chargé de Facturation</h2>
       <p class="alt-company">Véolia Recyclage & Valorisation</p>
       <p class="alt-context">Intégré à la <strong style="color:#fff">Direction Administrative et Financière</strong> de l'activité Recyclage & Valorisation pour la région Grand Est, au sein du <strong style="color:#fff">service facturation et recouvrement</strong>.<br><br>Véolia est présent dans 50 pays, emploie 220 000 collaborateurs et réalise ~45 milliards d'euros de CA. La région Grand Est valorise plusieurs centaines de milliers de tonnes de déchets chaque année.</p>
       <div class="alt-badge"><span class="dot-blink">●</span> En poste · Alternance 2e année BUT GEA</div>
@@ -984,7 +987,7 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
 <section class="section" id="contact">
   <div class="contact-wrap">
     <div class="contact-left reveal-left">
-      <div class="contact-big">ÉCRIVEZ-<br>MOI <em>.</em></div>
+      <div class="contact-big">ÉCRIVEZ-MOI <em>.</em></div>
       <p class="contact-sub">Étudiant en BUT GEA 2e année en alternance chez Véolia. Disponible pour tout échange professionnel ou académique.</p>
       <a href="mailto:nicolas.ginko@gmail.com" class="btn btn-gold" style="margin-top:1rem">Envoyer un email</a>
     </div>
@@ -1015,14 +1018,20 @@ document.addEventListener('DOMContentLoaded', function() {
     btn.addEventListener('click', function() {
       var o = menu.classList.toggle('open');
       btn.classList.toggle('open', o);
-      document.body.style.overflow = o ? 'hidden' : '';
+      document.body.style.overflow = '';
     });
     menu.querySelectorAll('a').forEach(function(a) {
       a.addEventListener('click', function() {
         menu.classList.remove('open');
         btn.classList.remove('open');
-        document.body.style.overflow = '';
       });
+    });
+    // Fermer en cliquant dehors
+    document.addEventListener('click', function(e) {
+      if (!menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.classList.remove('open');
+        btn.classList.remove('open');
+      }
     });
   }
 
