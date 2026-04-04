@@ -989,13 +989,12 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
     <div class="contact-left reveal-left">
       <div class="contact-big">ÉCRIVEZ-MOI <em>!</em></div>
       <p class="contact-sub">Étudiant en BUT GEA 2e année en alternance chez Véolia. Disponible pour tout échange professionnel ou académique.</p>
-      <a href="/cdn-cgi/l/email-protection#2b45424844474a58054c424540446b4c464a424705484446" class="btn btn-gold" style="margin-top:1rem">Envoyer un email</a>
+      <a href="mailto:nicolas.ginko@gmail.com" class="btn btn-gold" style="margin-top:1rem">Envoyer un email</a>
     </div>
     <div class="contact-right reveal-right">
       <div class="crow"><span class="clabel">Téléphone</span><span class="cval">+33 6 24 03 36 22</span></div>
-      <div class="crow"><span class="clabel">Email</span><span class="cval accent"><a href="/cdn-cgi/l/email-protection#47292e24282b263469202e292c2807202a262e2b6924282a" style="color:var(--gold);text-decoration:none"><span class="__cf_email__" data-cfemail="127c7b717d7e73613c757b7c797d52757f737b7e3c717d7f">[email&#160;protected]</span></a></span></div>
-      <div class="crow"><span class="clabel">Localisation</span><span class="cval">Nancy, France</span></div>
-      <div class="crow"><span class="clabel">Formation</span><span class="cval">BUT GEA · IUT Nancy-Charlemagne</span></div>
+      <div class="crow"><span class="clabel">Email</span><span class="cval accent"><a href="mailto:nicolas.ginko@gmail.com" style="color:var(--gold);text-decoration:none">nicolas.ginko@gmail.com</a></span></div>
+      <div class="crow"><span class="an></div>
       <div class="crow"><span class="clabel">Alternance</span><span class="cval">Véolia R&V Grand Est</span></div>
       <div class="crow"><span class="clabel">LinkedIn</span><span class="cval accent"><a href="https://www.linkedin.com/in/nicolas-v-9a98a22a9/" target="_blank" style="color:var(--gold);text-decoration:none">nicolas-v ↗</a></span></div>
       <div class="crow"><span class="clabel">Statut</span><span class="cavail">● En alternance · Véolia</span></div>
@@ -1008,7 +1007,7 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
   <div class="footer-text">BUT GEA · IUT Nancy-Charlemagne · 2025</div>
   <div class="footer-text">Portfolio Professionnel</div>
 </footer>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
 
   // HAMBURGER
@@ -1026,7 +1025,6 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.classList.remove('open');
       });
     });
-    // Fermer en cliquant dehors
     document.addEventListener('click', function(e) {
       if (!menu.contains(e.target) && !btn.contains(e.target)) {
         menu.classList.remove('open');
@@ -1093,4 +1091,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // REVEAL
   var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) 
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(function(el) {
+    obs.observe(el);
+  });
+
+});
+</script>
+</body>
+</html>
