@@ -438,39 +438,39 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
   nav{padding:0 1.2rem;height:54px}
   .nav-hamburger{display:flex}
 
-  /* Menu plein écran — fond bleu royal, texte or */
+  /* Menu plein écran — fond bleu foncé opaque, texte or aligné à droite */
   .nav-links{
     display:flex;
     flex-direction:column;
     position:fixed;
-    top:0;left:0;right:0;bottom:0;   /* couvre TOUT l'écran */
-    background:#0B2545;               /* bleu royal plein, pas transparent */
-    align-items:center;
+    top:0;left:0;right:0;bottom:0;
+    background:rgba(5,18,40,0.97);
+    align-items:flex-end;
     justify-content:center;
-    gap:2.5rem;
+    gap:2.2rem;
     list-style:none;
-    /* caché par défaut : glisse depuis la droite */
+    padding-right:2rem;
     transform:translateX(100%);
     transition:transform .4s cubic-bezier(.22,1,.36,1);
     z-index:1000;
   }
   .nav-links.open{transform:translateX(0)}
 
-  /* Liens : Cormorant Garamond, or, grands */
+  /* Liens : Cormorant Garamond, or, grands, alignés à droite */
   .nav-links a{
     font-family:'Cormorant Garamond',Georgia,serif;
     font-style:italic;
-    font-size:2rem;
-    letter-spacing:0.1em;
-    color:#C9A84C;                    /* or */
+    font-size:2.2rem;
+    letter-spacing:0.08em;
+    color:#C9A84C;
     text-decoration:none;
     transition:opacity .2s,transform .2s;
     display:block;
-    text-align:center;
+    text-align:right;
   }
   .nav-links a:hover{
-    opacity:0.75;
-    transform:translateY(-2px);
+    opacity:0.7;
+    transform:translateX(-4px);
   }
 
   /* Hamburger au-dessus du menu (z-index > menu) */
@@ -1016,7 +1016,7 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 
-  // HAMBURGER - menu plein ecran
+  // HAMBURGER
   var btn  = document.getElementById('hamburger');
   var menu = document.getElementById('navLinks');
   if (btn && menu) {
@@ -1034,7 +1034,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // BARRE DE PROGRESSION
+  // PROGRESSION
   var prog = document.getElementById('progress');
   if (prog) {
     window.addEventListener('scroll', function() {
@@ -1043,7 +1043,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // CURSEUR CUSTOM (desktop uniquement)
+  // CURSEUR (desktop uniquement)
   var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
   var cur  = document.getElementById('cursor');
   var ring = document.getElementById('cursorRing');
