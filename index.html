@@ -34,12 +34,7 @@ body{background:var(--off);color:var(--navy);font-family:'Inter',sans-serif;font
 @keyframes dotBlink{0%,100%{opacity:1}50%{opacity:0.3}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
-.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s cubic-bezier(.22,1,.36,1),transform 0.7s cubic-bezier(.22,1,.36,1)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity 0.7s cubic-bezier(.22,1,.36,1),transform 0.7s cubic-bezier(.22,1,.36,1)}
-.reveal-left.visible{opacity:1;transform:translateX(0)}
-.reveal-right{opacity:0;transform:translateX(28px);transition:opacity 0.7s cubic-bezier(.22,1,.36,1),transform 0.7s cubic-bezier(.22,1,.36,1)}
-.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal,.reveal-left,.reveal-right{opacity:1;transition:opacity 0.7s cubic-bezier(.22,1,.36,1),transform 0.7s cubic-bezier(.22,1,.36,1)}
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
 .d4{transition-delay:.4s}.d5{transition-delay:.5s}.d6{transition-delay:.6s}
 
@@ -425,7 +420,7 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
 <div class="cursor-ring" id="cursorRing"></div>
 
 <nav>
-  <div class="nav-logo">VIVIER <span>Nicolas</span></div>
+  <a href="#hero" class="nav-logo" style="text-decoration:none;cursor:pointer">VIVIER <span>Nicolas</span></a>
   <ul class="nav-links">
     <li><a href="#about">Présentation</a></li>
     <li><a href="#alternance">Alternance</a></li>
@@ -438,7 +433,7 @@ footer{background:var(--navy);padding:1.5rem 2.5rem;display:flex;justify-content
   </ul>
 </nav>
 
-<section class="hero">
+<section class="hero" id="hero">
   <div class="hero-left">
     <p class="hero-eyebrow">Portfolio · Présentation professionnelle</p>
     <div class="hero-name">VIVIER</div>
@@ -923,15 +918,4 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => ob
 
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-links a');
-window.addEventListener('scroll', () => {
-  let current = '';
-  sections.forEach(s => {
-    if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id');
-  });
-  navLinks.forEach(a => {
-    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
-  });
-});
-</script>
-</body>
-</html>
+window.addE
